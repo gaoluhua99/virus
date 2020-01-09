@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <properties>
+        <property name="LOG_HOME">./logs</property>
+        <property name="FILE_NAME">core</property>
+        <property name="LOG_FORMAT">%-d{yyyy-MM-dd HH:mm:ss} - [ %c %M %L] - [ %p ] - %m%n</property>
+        <property name="TIMER_LOG_FORMAT">%-d{yyyy-MM-dd HH:mm:ss} - [ %p ] - %m%n</property>
+    </properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_FORMAT}"/>
+        </Console>
+        <!--总日志-->
+        <RollingRandomAccessFile name="core" fileName="${LOG_HOME}/${FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${LOG_FORMAT}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="core"/>
+        </Root>
+    </Loggers>
+</Configuration>
