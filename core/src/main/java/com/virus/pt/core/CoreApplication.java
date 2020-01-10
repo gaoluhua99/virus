@@ -11,6 +11,6 @@ public class CoreApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CoreApplication.class, args);
-        logger.info("Application is running");
+        logger.info("CoreApplication is running");
     }
 }

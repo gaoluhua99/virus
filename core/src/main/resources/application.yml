@@ -1,36 +1,70 @@
 server:
   servlet:
-    context-path: /api
+    context-path: /virus
 spring:
   profiles:
-    active: dev
+    active: dev-db
   servlet:
     multipart:
       max-file-size: 1MB
       max-request-size: 1MB
 # config
-api:
-  name: Virus
-  # url映射 修改后端还必须修改前端
-  url:
-    auth:
-      value: /auth
-      login: /login
-      logout: /logout
-      register: /register
-      captcha: /captcha
-      activation: '/activation/{code}'
-      sendResetPassEmail: /send/reset/email
-      resetPass: /reset/pass
-  # 上传文件配置，可直接get访问
-  file:
-    # 静态资源对外暴露的名称
-    staticAccessPath: file
-    # 文件上传存储文件夹名称
-    uploadFolder: upload
-    # 验证码存储文件夹名称
-    captchaFolder: captcha
-    # 存储头像的文件夹名称
-    avatarFolder: avatar
-  # 存储种子的文件夹名称，不可以直接get访问
-  torrentsFolder: torrents
+config:
+  # api服务器配置
+  virus:
+    # 名称
+    name: Virus
+    # virus的host
+    host: localhost
+    # virus的port
+    port: 11111
+    # 是否用到https
+    useHttps: false
+    path: /virus
+    # url映射 修改后端还必须修改前端
+    url:
+      auth:
+        value: /auth
+        login: /login
+        logout: /logout
+        register: /register
+        captcha: /captcha
+        activation: '/activation/{code}'
+        sendResetPassEmail: /send/reset/email
+        resetPass: /reset/pass
+    # 上传文件配置，可直接get访问
+    file:
+      # 静态资源对外暴露的名称
+      staticAccessPath: file
+      # 文件上传存储文件夹名称
+      uploadFolder: upload
+      # 验证码存储文件夹名称
+      captchaFolder: captcha
+      # 存储头像的文件夹名称
+      avatarFolder: avatar
+    # 存储种子的文件夹名称，不可以直接get访问
+    torrentsFolder: torrents
+  # Tracker服务器配置
+  pestilence:
+    # pestilence的名称
+    name: Pestilence
+    # pestilence的host
+    host: localhost
+    # pestilence的端口
+    port: 22222
+    # 是否用到https
+    useHttps: false
+    # 路径
+    path: /pestilence
+  # 前端服务器配置
+  germ:
+    # 名称
+    name: Germ
+    # germ的host
+    host: localhost
+    # germ的port
+    port: 8080
+    # 是否用到https
+    useHttps: false
+    # 路径
+    path: /

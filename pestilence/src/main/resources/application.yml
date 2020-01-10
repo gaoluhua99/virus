@@ -1,0 +1,22 @@
+server:
+  servlet:
+    context-path: /pestilence
+spring:
+  profiles:
+    active: dev-db
+# config
+config:
+  pestilence:
+    # pestilence的名称
+    name: Pestilence
+    # pestilence的host
+    host: localhost
+    # pestilence的端口
+    port: 22222
+    # 是否用到https
+    useHttps: false
+    # 路径
+    path: /pestilence
+    url:
+      scrape: /scrape
+      announce: /announce

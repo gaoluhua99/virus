@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>core</artifactId>
+    <artifactId>pestilence</artifactId>
 
     <dependencies>
         <!--virus modules-->
@@ -39,7 +39,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 工程主入口-->
-                    <mainClass>com.virus.pt.core.CoreApplication</mainClass>
+                    <mainClass>com.virus.pt.pestilence.PestilenceApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
