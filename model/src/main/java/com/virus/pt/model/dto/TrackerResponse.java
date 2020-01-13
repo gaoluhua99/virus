@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 public class TrackerResponse {
-    public static final int INTERVAL = 3000;
+    public static final int INTERVAL = 3600;
     public static final int MIN_INTERVAL = 30;
 
     private long complete;

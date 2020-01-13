@@ -29,7 +29,7 @@ public class CheckRuleUtils {
             6881, 6882, 6883, 6884, 6885, 6886, 6887, // BitTorrent part of full range of ports used most often (unofficial)};
     };
     private static final String[] CLIENT_WHITE_LIST = new String[]{
-            "Transmission/2.94"
+            "Transmission/2.94", "qBittorrent/4.2.0"
     };
 
     /**

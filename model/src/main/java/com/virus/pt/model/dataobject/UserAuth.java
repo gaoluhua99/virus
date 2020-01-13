@@ -25,18 +25,18 @@ public class UserAuth implements Serializable {
     // 主键ID
     @TableId(type = IdType.AUTO)
     private Long id;
-    // 邮箱
-    private String email;
-    // 密码hash
-    private String passwordHash;
-    // 是否激活
-    private Boolean isActivation;
-    // 是否删除
-    private Boolean isDelete;
     // 创建时间
     @TableField(fill = FieldFill.INSERT)
     private Date created;
     // 更新时间
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modified;
+    // 邮箱
+    private String ukEmail;
+    // 密码hash
+    private String passwordHash;
+    // 是否激活
+    private Boolean isActivation;
+    // 是否删除
+    private Boolean isDelete;
 }

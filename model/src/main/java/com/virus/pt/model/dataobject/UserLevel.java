@@ -10,17 +10,16 @@ import java.util.Date;
 
 /**
  * @author intent
- * @date 2019/7/14 15:53
- * @about <link href='http://zzyitj.xyz/'/>
+ * @version 1.0
+ * @date 2020/1/13 2:17 下午
+ * @email zzy.main@gmail.com
  */
 @Getter
 @Setter
 @ToString
-@TableName(value = "t_user_info")
-public class UserInfo implements Serializable {
-
-    private static final long serialVersionUID = -3447984729338161227L;
-
+@TableName(value = "t_user_level")
+public class UserLevel implements Serializable {
+    private static final long serialVersionUID = 3759459293476760894L;
     @TableId(type = IdType.AUTO)
     private Long id;
     // 创建时间
@@ -29,15 +28,7 @@ public class UserInfo implements Serializable {
     // 更新时间
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modified;
-    private Long fkUserAuthId;
-    private Long fkUserDataId;
-    private String username;
-    private Boolean sex;
-    private Long gold;
-    private Long exp;
-    private Integer inviterId;
-    private String avatarUrl;
-    private String ip;
-    // 是否删除
+    private Long needExp;
+    private String levelName;
     private Boolean isDelete;
 }

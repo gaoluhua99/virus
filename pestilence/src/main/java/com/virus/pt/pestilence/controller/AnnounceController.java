@@ -4,11 +4,17 @@ import com.virus.pt.common.enums.PeerStateEnum;
 import com.virus.pt.common.enums.TrackerResponseEnum;
 import com.virus.pt.common.exception.TipException;
 import com.virus.pt.common.util.TrackerResponseUtils;
+import com.virus.pt.db.service.PeerService;
+import com.virus.pt.db.service.TorrentService;
+import com.virus.pt.db.service.TorrentStatusService;
+import com.virus.pt.db.service.UserDataService;
 import com.virus.pt.model.dataobject.Peer;
 import com.virus.pt.model.dataobject.Torrent;
-import com.virus.pt.model.dataobject.UserInfo;
+import com.virus.pt.model.dataobject.UserData;
+import com.virus.pt.model.dto.TrackerResponse;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.net.URLCodec;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,31 +30,31 @@ import java.util.List;
 @RequestMapping
 public class AnnounceController extends AnnounceImpl {
 
-//    @Autowired
-//    private TorrentService torrentService;
-//
-//    @Autowired
-//    private UserInfoService userInfoService;
-//
-//    @Autowired
-//    private PeerService peerService;
+    @Autowired
+    private TorrentService torrentService;
+
+    @Autowired
+    private TorrentStatusService torrentStatusService;
+
+    @Autowired
+    private PeerService peerService;
+
+    @Autowired
+    private UserDataService userDataService;
 
     @Override
     Torrent getTorrentByHash(byte[] hash) throws DecoderException {
-//        return torrentService.getTorrentByHash(URLCodec.decodeUrl(hash));
-        return null;
+        return torrentService.getByHash(URLCodec.decodeUrl(hash));
     }
 
     @Override
-    UserInfo getUserByPasskey(String passkey) throws TipException {
-//        return userInfoService.getUserInfoByPasskey(passkey);
-        return null;
+    UserData getUserByPasskey(String passkey) throws TipException {
+        return userDataService.getByPasskey(passkey);
     }
 
     @Override
-    List<Peer> getAllPeers(Integer tid) {
-//        return peerService.getAllPeer(tid);
-        return null;
+    List<Peer> getAllPeers(Long tid) {
+        return peerService.getPeerList(tid);
     }
 
     /**
@@ -62,47 +68,48 @@ public class AnnounceController extends AnnounceImpl {
     @Override
     String start(Peer peer, List<Peer> peers, Torrent torrent) {
         peer.setConnectTime(0);
-//        // 判断left是否等于0，等于0说明是辅种
-//        if (peer.getLeft() == 0) {
-//            peer.setState(PeerStateEnum.COMPLETE.getCode());
-//            // 判断是否加入过完成表，没有加入则complete + 1
-//            if (!peerService.existStateByUid(
-//                    torrent.getId(), peer.getUid(), PeerStateEnum.COMPLETE.getCode())) {
-//                peerService.addStateByUid(torrent.getId(), peer.getUid(), PeerStateEnum.COMPLETE.getCode());
-//            }
-//            // 添加到peers
-//            peerService.savePeer(torrent.getId(), peer);
-//            // 统计正在做种、下载人数
-//            int[] complete = getComplete(peers);
-//            return TrackerResponseUtils.success(peers, complete[0], complete[1]);
-//        } else {
-//            // 没有peer
-//            if (peers == null || peers.size() == 0) {
-//                return TrackerResponseUtils.error(TrackerResponseEnum.NO_PEER);
-//            } else {
-//                peer.setState(PeerStateEnum.DOWNLOAD.getCode());
-//                // 判断该种子是否正在下载
-//                // 判断是否加入过下载表
-//                if (!peerService.existStateByUid(
-//                        torrent.getId(), peer.getUid(), PeerStateEnum.DOWNLOAD.getCode())) {
-//                    peerService.addStateByUid(torrent.getId(), peer.getUid(), PeerStateEnum.DOWNLOAD.getCode());
-//                } else {
-//                    // 只更新时间
-//                    peerService.modifyByUid(torrent.getId(), peer.getUid(), PeerStateEnum.DOWNLOAD.getCode(), true);
-//                }
-//                // 添加到peers
-//                peerService.savePeer(torrent.getId(), peer);
-//                // 统计正在做种、下载人数
-//                int[] complete = getComplete(peers);
-//                return TrackerResponseUtils.success(peers, complete[0], complete[1]);
-//            }
-//        }
-        return null;
+        // 判断left是否等于0，等于0说明是辅种
+        if (peer.getLeft() == 0) {
+            peer.setState(PeerStateEnum.UPLOAD.getCode());
+            // 判断是否加入过完成表
+            if (!torrentStatusService.exist(torrent.getId(), TrackerResponse.INTERVAL, true)) {
+                if (peer.getIpv6() != null) {
+                    torrentStatusService.save(peer.getUserDataId(), torrent.getId(), true, peer.getUserAgent(), peer.getIpv6());
+                } else {
+                    torrentStatusService.save(peer.getUserDataId(), torrent.getId(), true, peer.getUserAgent(), peer.getIp());
+                }
+            }
+            // 添加到peers
+            peerService.savePeer(torrent.getId(), peer);
+            // 统计正在做种、下载人数
+            int[] complete = getComplete(peers);
+            return TrackerResponseUtils.success(peers, complete[0], complete[1]);
+        } else {
+            // 没有peer
+            if (peers == null || peers.size() == 0) {
+                return TrackerResponseUtils.error(TrackerResponseEnum.NO_PEER);
+            } else {
+                peer.setState(PeerStateEnum.DOWNLOAD.getCode());
+                // 判断该种子是否正在下载
+                if (torrentStatusService.exist(torrent.getId(), TrackerResponse.INTERVAL, false)) {
+                    return TrackerResponseUtils.error(TrackerResponseEnum.REPEAT_DOWNLOAD);
+                }
+                // 加入下载表
+                if (peer.getIpv6() != null) {
+                    torrentStatusService.save(peer.getUserDataId(), torrent.getId(), false, peer.getUserAgent(), peer.getIpv6());
+                } else {
+                    torrentStatusService.save(peer.getUserDataId(), torrent.getId(), false, peer.getUserAgent(), peer.getIp());
+                }
+                // 添加到peers
+                peerService.savePeer(torrent.getId(), peer);
+                // 统计正在做种、下载人数
+                int[] complete = getComplete(peers);
+                return TrackerResponseUtils.success(peers, complete[0], complete[1]);
+            }
+        }
     }
 
     /**
-     * 未解决：统计做种时间
-     *
      * @param peer
      * @param peers
      * @param torrent

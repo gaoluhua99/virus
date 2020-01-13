@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author intent
@@ -19,19 +20,21 @@ import java.io.Serializable;
 public class Torrent implements Serializable {
 
     private static final long serialVersionUID = -3617303636715796178L;
-
     @TableId(type = IdType.AUTO)
-    private Integer id;
-    private Integer uid;
+    private Long id;
+    // 创建时间
+    @TableField(fill = FieldFill.INSERT)
+    private Date created;
+    // 更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date modified;
+    private Long fkUserAuthId;
+    private Long fkTorrentDiscountId;
+    private byte[] ukInfoHash;
     private String fileName;
     private Long fileSize;
     private String filePath;
-    private byte[] infoHash;
-    private Integer discountId;
-    private Long size;
+    private Long torrentSize;
     private Integer torrentCount;
-    @TableField(fill = FieldFill.INSERT)
-    private Long created;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long modify;
+    private Boolean isDelete;
 }

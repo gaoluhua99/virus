@@ -1,7 +1,7 @@
 package com.virus.pt.pestilence.controller;
 
 import com.virus.pt.common.enums.TrackerResponseEnum;
-import com.virus.pt.common.enums.UserInfoEnum;
+import com.virus.pt.common.enums.UserDataEnum;
 import com.virus.pt.common.exception.TipException;
 import com.virus.pt.common.util.RequestUtils;
 import com.virus.pt.common.util.TrackerResponseUtils;
@@ -9,7 +9,7 @@ import com.virus.pt.common.util.CheckRuleUtils;
 import com.virus.pt.common.util.IPUtils;
 import com.virus.pt.model.dataobject.Peer;
 import com.virus.pt.model.dataobject.Torrent;
-import com.virus.pt.model.dataobject.UserInfo;
+import com.virus.pt.model.dataobject.UserData;
 import com.virus.pt.model.vo.IPEndpointVo;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.lang3.StringUtils;
@@ -31,9 +31,9 @@ public abstract class AnnounceImpl implements Announce {
 
     abstract Torrent getTorrentByHash(byte[] hash) throws DecoderException;
 
-    abstract UserInfo getUserByPasskey(String passkey) throws TipException;
+    abstract UserData getUserByPasskey(String passkey) throws TipException;
 
-    abstract List<Peer> getAllPeers(Integer tid);
+    abstract List<Peer> getAllPeers(Long tid);
 
     abstract String start(Peer peer, List<Peer> peers, Torrent torrent);
 
@@ -83,9 +83,9 @@ public abstract class AnnounceImpl implements Announce {
                 peerId, port, upload, download, left, event, key);
         if (trackerResponseEnum == TrackerResponseEnum.SUCCESS) {
             // 判断用户状态，是否封禁等等
-            UserInfo user = getUserByPasskey(passkey);
+            UserData userData = getUserByPasskey(passkey);
             // 用户未激活
-            if (user == null || user.getStatus() != UserInfoEnum.ACTIVE.getCode()) {
+            if (userData == null || userData.getUserStatus() != UserDataEnum.ACTIVE.getCode()) {
                 return TrackerResponseUtils.error(TrackerResponseEnum.ACCOUNT_STATUS_ERROR);
             }
             // 判断种子库中是否存在该种子
@@ -95,13 +95,14 @@ public abstract class AnnounceImpl implements Announce {
             } else {
                 // 构造peer
                 Peer peer = new Peer();
-                peer.setUid(user.getUid());
+                peer.setUserDataId(userData.getId());
                 peer.setIp(IPUtils.getIpAddr(request));
                 if (StringUtils.isNotBlank(ipv6)) {
                     peer.setIpv6(ipv6);
                 }
                 peer.setPort(Long.valueOf(port));
                 peer.setPeerId(request.getParameter(PEER_ID_PARAM));
+                peer.setUserAgent(userAnent);
                 peer.setKey(key);
                 peer.setLeft(Long.parseLong(request.getParameter(LEFT_PARAM)));
                 peer.setUploaded(Long.parseLong(request.getParameter(UPLOAD_PARAM)));

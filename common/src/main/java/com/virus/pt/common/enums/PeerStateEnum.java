@@ -11,8 +11,7 @@ import lombok.ToString;
 @ToString
 public enum PeerStateEnum {
     DOWNLOAD(0, "下载"),
-    UPLOAD(1, "上传"),
-    COMPLETE(2, "完成");
+    UPLOAD(1, "上传");
 
     private int code;
     private String status;
