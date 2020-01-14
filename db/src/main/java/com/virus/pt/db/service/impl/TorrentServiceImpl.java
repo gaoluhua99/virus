@@ -44,23 +44,23 @@ public class TorrentServiceImpl extends ServiceImpl<TorrentDao, Torrent> impleme
     public Torrent getById(long tid) throws TipException {
         Torrent torrent = getRedisById(tid);
         if (torrent == null) {
-            torrent = getById(tid);
+            torrent = getOne(new QueryWrapper<Torrent>()
+                    .eq("id", tid)
+                    .eq("is_delete", false));
             if (torrent == null) {
                 throw new TipException(ResultEnum.NO_SUCH_SEED);
+            } else {
+                saveToRedis(torrent);
+                logger.info("缓存Torrent到Redis: {}", torrent);
             }
-            saveToRedis(torrent);
-            logger.info("缓存Torrent到Redis: {}", torrent);
         }
         return torrent;
     }
 
     @Override
     public Torrent getByHash(byte[] infoHash) {
-        return this.getOne(new QueryWrapper<Torrent>().eq("uk_info_hash", infoHash));
-    }
-
-    @Override
-    public boolean existHash(byte[] infoHash) {
-        return this.getOne(new QueryWrapper<Torrent>().eq("uk_info_hash", infoHash)) != null;
+        return this.getOne(new QueryWrapper<Torrent>()
+                .eq("uk_info_hash", infoHash)
+                .eq("is_delete", false));
     }
 }

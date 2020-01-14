@@ -16,9 +16,6 @@ import java.util.List;
 @Getter
 @Setter
 public class TrackerResponse {
-    public static final int INTERVAL = 3600;
-    public static final int MIN_INTERVAL = 30;
-
     private long complete;
     private long incomplete;
     private long interval;
@@ -29,12 +26,12 @@ public class TrackerResponse {
     private long minInterval;
 
     public TrackerResponse() {
-        this(0, 0, null);
+        this(3600, 60, 0, 0, null);
     }
 
-    public TrackerResponse(long complete, long incomplete, List<Peer> peers) {
-        this.interval = INTERVAL;
-        this.minInterval = MIN_INTERVAL;
+    public TrackerResponse(long interval, long minInterval, long complete, long incomplete, List<Peer> peers) {
+        this.interval = interval;
+        this.minInterval = minInterval;
         this.complete = complete;
         this.incomplete = incomplete;
         this.peers = peers;

@@ -28,7 +28,7 @@ public class TorrentStatus implements Serializable {
     // 更新时间
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modified;
-    private Long fkUserDataId;
+    private String fkUserDataPasskey;
     private Long fkTorrentId;
     private Boolean torrentStatus;
     private String ip;

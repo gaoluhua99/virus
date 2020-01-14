@@ -23,4 +23,14 @@ public interface PeerService {
     void removePeer(long tid, Peer peer);
 
     long getCount(long tid);
+
+    long getDownloadingCount(long tid);
+
+    long getSeedingCount(long tid);
+
+    // 获取按下载人数排序好的tid集合
+    List<Long> getRankDownloading(int start, int end);
+
+    // 获取按做种人数排序好的tid集合
+    List<Long> getRankSeeding(int start, int end);
 }

@@ -7,8 +7,6 @@ import com.virus.pt.db.service.TorrentStatusService;
 import com.virus.pt.model.dataobject.TorrentStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 /**
  * @author intent
  * @version 1.0
@@ -21,20 +19,18 @@ public class TorrentStatusServiceImpl
         implements TorrentStatusService {
 
     @Override
-    public boolean exist(long tid, long time, boolean isSnatch) {
-        return this.baseMapper.selectTorrentIdAndTime(tid, time, isSnatch) != null;
+    public boolean exist(String userDataPasskey, long torrentId, boolean isSnatch) {
+        return this.baseMapper.selectTorrentId(userDataPasskey, torrentId, isSnatch) != null;
     }
 
     @Override
-    public boolean save(long userDataId, long torrentId, boolean isSnatch, String clientName, String ip) {
+    public boolean save(String userDataPasskey, long torrentId, boolean isSnatch, String clientName, String ip) {
         TorrentStatus torrentStatus = new TorrentStatus();
-        torrentStatus.setFkUserDataId(userDataId);
+        torrentStatus.setFkUserDataPasskey(userDataPasskey);
         torrentStatus.setFkTorrentId(torrentId);
         torrentStatus.setTorrentStatus(isSnatch);
         torrentStatus.setClientName(clientName);
         torrentStatus.setIp(ip);
-        torrentStatus.setCreated(new Date());
-        torrentStatus.setModified(new Date());
         return SqlHelper.retBool(this.baseMapper.insert(torrentStatus));
     }
 }

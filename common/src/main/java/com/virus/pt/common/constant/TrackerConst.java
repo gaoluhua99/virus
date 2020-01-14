@@ -6,6 +6,8 @@ package com.virus.pt.common.constant;
  * @about <link href='http://zzyitj.xyz/'/>
  */
 public class TrackerConst {
+    public static final int INTERVAL = 3600;
+    public static final int MIN_INTERVAL = 60;
     public static final String USER_ANENT = "User-Agent";
     // 协议
     public static final int INFO_HASH_LENGTH = 20;
@@ -27,8 +29,7 @@ public class TrackerConst {
     public static final String STOP = "stopped";
     public static final String PAUSED = "paused";
     public static final String COMPLETED = "completed";
-    public static final String WORKING = null;
-    public static final String[] TRACKER_EVENT = new String[]{STARTED, STOP, PAUSED, COMPLETED, WORKING};
+    public static final String[] TRACKER_EVENT = new String[]{STARTED, STOP, PAUSED, COMPLETED};
     // port
     public static final int MIN_PORT = 0;
     public static final int MAX_PORT = 0xffff;

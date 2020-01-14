@@ -11,4 +11,6 @@ public class ApiConst {
     public static final int PASSWORD_MIN_LEN = 6;
     // 密码最大长度
     public static final int PASSWORD_MAX_LEN = 32;
+    public static final int SECOND_UNIT = 1000;
+
 }

@@ -19,4 +19,4 @@ config:
     path: /pestilence
     url:
       scrape: /scrape
-      announce: /announce
+      announce: /tracker

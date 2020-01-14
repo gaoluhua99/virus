@@ -17,14 +17,12 @@ import java.io.Serializable;
 public class Peer implements Serializable {
     private static final long serialVersionUID = -6801111193543281051L;
 
-    private long userDataId;
+    private String passkey;
     private String ip;
     private String ipv6;
-    private Long port;
+    private long port;
     // 上传量
     private long uploaded;
-    // 上传速度
-    private long uploadSpeed;
     // 下载量
     private long downloaded;
     // 剩余
@@ -35,7 +33,6 @@ public class Peer implements Serializable {
     private long lastConnectTime;
     // 客服端标志
     private String peerId;
-    private String userAgent;
     // 客服端key
     private String key;
     // 状态

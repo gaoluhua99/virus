@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,6 +16,12 @@ public class Config implements Serializable {
     private static final long serialVersionUID = 830247103594848910L;
     @TableId(type = IdType.AUTO)
     private Long id;
+    // 创建时间
+    @TableField(fill = FieldFill.INSERT)
+    private Date created;
+    // 更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date modified;
     //password
     private String passPrefix;
     // token
@@ -37,5 +44,7 @@ public class Config implements Serializable {
     private Boolean registerState;
     // imdb
     private String imdbKey;
+    private Integer trackerInterval;
+    private Integer trackerMinInterval;
     private Boolean isDelete;
 }

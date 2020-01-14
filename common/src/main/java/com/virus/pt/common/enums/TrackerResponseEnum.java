@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public enum TrackerResponseEnum {
     // 基本规则
-    ERROR("Args error"),
+    ERROR("Error"),
     SUCCESS("Success"),
     HEADER_ERROR("Header error"),
     INFO_HASH_EMPTY("Info hash can't empty"),
@@ -26,11 +26,11 @@ public enum TrackerResponseEnum {
     // 业务逻辑
     PASSKEY_ERROR("Passkey error"),
     ACCOUNT_STATUS_ERROR("Account status error"),
-    MIN_INTERVAL("Min interval 30s"),
+    MIN_INTERVAL("Min interval error"),
     EXCEED_THE_SPEED_LIMIT("Exceed the speed limit"),
     REPEAT_DOWNLOAD("Repeat download"),
     NO_REGISTER_TORRENT("The torrent not register in tracker"),
-    NO_PEER("No peer"),
+    NO_PEERS("No peers"),
     NO_SEED("No seed");
 
     private String message;

@@ -10,8 +10,7 @@ import com.virus.pt.model.dataobject.TorrentStatus;
  * @email zzy.main@gmail.com
  */
 public interface TorrentStatusService extends IService<TorrentStatus> {
-    // 是否存在时间小于time的数据
-    boolean exist(long tid, long time,boolean isSnatch);
+    boolean exist(String userDataPasskey, long torrentId, boolean isSnatch);
 
-    boolean save(long userDataId, long torrentId, boolean isSnatch, String clientName, String ip);
+    boolean save(String userDataPasskey, long torrentId, boolean isSnatch, String clientName, String ip);
 }

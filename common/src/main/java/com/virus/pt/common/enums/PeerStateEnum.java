@@ -10,8 +10,8 @@ import lombok.ToString;
 @Getter
 @ToString
 public enum PeerStateEnum {
-    DOWNLOAD(0, "下载"),
-    UPLOAD(1, "上传");
+    DOWNLOADING(0, "下载中"),
+    SEEDING(1, "做种中");
 
     private int code;
     private String status;

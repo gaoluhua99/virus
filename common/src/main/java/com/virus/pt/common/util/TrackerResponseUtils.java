@@ -13,7 +13,7 @@ import java.util.*;
  * @about <link href='http://zzyitj.xyz/'/>
  */
 public class TrackerResponseUtils {
-    public static String success(List<Peer> peers, int complete, int incomplete) {
+    public static String success(List<Peer> peers, long complete, long incomplete) {
         TrackerResponse trackerResponse = new TrackerResponse();
         trackerResponse.setComplete(complete);
         trackerResponse.setIncomplete(incomplete);

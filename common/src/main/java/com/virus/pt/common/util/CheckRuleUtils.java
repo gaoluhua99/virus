@@ -29,12 +29,12 @@ public class CheckRuleUtils {
             6881, 6882, 6883, 6884, 6885, 6886, 6887, // BitTorrent part of full range of ports used most often (unofficial)};
     };
     private static final String[] CLIENT_WHITE_LIST = new String[]{
-            "Transmission/2.94", "qBittorrent/4.2.0"
+            "Transmission", "qBittorrent"
     };
 
     /**
      * 检查规则
-     * info_hash, peer_id, port, uploaded, downloaded, left, passkey 为必须参数
+     * userAnent, info_hash, peer_id, port, uploaded, downloaded, left, passkey 为必须参数
      *
      * @return TrackerResponseEnum
      */
@@ -43,34 +43,46 @@ public class CheckRuleUtils {
                                                 String upload, String download, String left, String event,
                                                 String key) {
         // 检查请求头header
-        if (checkHeader(userAnent)) {
-            TrackerResponseEnum trackerResponseEnum = checkHash(infoHash);
-            if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
-                return trackerResponseEnum;
-            }
-            trackerResponseEnum = checkPasskey(password, passkeyLen);
-            if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
-                return trackerResponseEnum;
-            }
-            trackerResponseEnum = checkPeerId(peerId);
-            if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
-                return trackerResponseEnum;
-            }
-            trackerResponseEnum = checkPort(port);
-            if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
-                return trackerResponseEnum;
-            }
-            trackerResponseEnum = checkPositiveNumber(upload, download, left);
-            if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
-                return trackerResponseEnum;
-            }
-            trackerResponseEnum = checkEvent(event);
-            if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
-                trackerResponseEnum = checkKey(key);
-            }
+        TrackerResponseEnum trackerResponseEnum = checkHeader(userAnent);
+        if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
             return trackerResponseEnum;
         }
-        return TrackerResponseEnum.HEADER_ERROR;
+        // 检测infohash
+        trackerResponseEnum = checkHash(infoHash);
+        if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
+            return trackerResponseEnum;
+        }
+        // 检测passkey长度
+        trackerResponseEnum = checkPasskey(password, passkeyLen);
+        if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
+            return trackerResponseEnum;
+        }
+        // 检查peerid长度
+        trackerResponseEnum = checkPeerId(peerId);
+        if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
+            return trackerResponseEnum;
+        }
+        // 检查端口
+        trackerResponseEnum = checkPort(port);
+        if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
+            return trackerResponseEnum;
+        }
+        // 检查上传下载是否正确
+        trackerResponseEnum = checkPositiveNumber(upload, download, left);
+        if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
+            return trackerResponseEnum;
+        }
+        // 检查事件
+        trackerResponseEnum = checkEvent(event);
+        if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
+            return trackerResponseEnum;
+        }
+        // 检查key
+        trackerResponseEnum = checkKey(key);
+        if (trackerResponseEnum != TrackerResponseEnum.SUCCESS) {
+            return trackerResponseEnum;
+        }
+        return trackerResponseEnum;
     }
 
     private static TrackerResponseEnum checkKey(String key) {
@@ -80,17 +92,16 @@ public class CheckRuleUtils {
         return TrackerResponseEnum.SUCCESS;
     }
 
-    private static boolean checkHeader(String userAgent) {
+    private static TrackerResponseEnum checkHeader(String userAgent) {
         if (StringUtils.isNotBlank(userAgent)) {
             // 检查userAgent是否在白名单内
             for (String client : CLIENT_WHITE_LIST) {
-                if (client.equals(userAgent)) {
-                    return true;
+                if (userAgent.contains(client)) {
+                    return TrackerResponseEnum.SUCCESS;
                 }
             }
-            return false;
         }
-        return false;
+        return TrackerResponseEnum.HEADER_ERROR;
     }
 
     public static TrackerResponseEnum checkHash(String infoHash) {
@@ -137,6 +148,9 @@ public class CheckRuleUtils {
      * @return TrackerResponseEnum
      */
     private static TrackerResponseEnum checkEvent(String event) {
+        if (StringUtils.isBlank(event)) {
+            return TrackerResponseEnum.SUCCESS;
+        }
         for (String s : TRACKER_EVENT) {
             if (s.equals(event)) {
                 return TrackerResponseEnum.SUCCESS;
