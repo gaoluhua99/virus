@@ -22,6 +22,8 @@ public class Config implements Serializable {
     // 更新时间
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modified;
+    // 版本号
+    private Integer version;
     //password
     private String passPrefix;
     // token
@@ -29,11 +31,6 @@ public class Config implements Serializable {
     private String tokenSecret;
     private Integer tokenExp;
     //email
-    private String emailName;
-    private String emailPass;
-    private String emailSmtpHost;
-    private Integer emailSmtpPort;
-    private String emailNickName;
     private String emailSubject;
     private String emailActivationTemplate;
     private String emailInviteTemplate;

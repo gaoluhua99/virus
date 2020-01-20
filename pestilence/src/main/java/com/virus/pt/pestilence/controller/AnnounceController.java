@@ -6,6 +6,7 @@ import com.virus.pt.common.enums.TrackerResponseEnum;
 import com.virus.pt.common.enums.UserDataEnum;
 import com.virus.pt.common.exception.TipException;
 import com.virus.pt.common.util.TrackerResponseUtils;
+import com.virus.pt.common.util.VirusUtils;
 import com.virus.pt.db.service.PeerService;
 import com.virus.pt.db.service.TorrentService;
 import com.virus.pt.db.service.TorrentStatusService;
@@ -92,7 +93,7 @@ public class AnnounceController extends AnnounceImpl {
                 Peer oldPeer = peerService.getPeer(torrent.getId(), peer);
                 // 判断种子在TrackerResponse.INTERVAL时间内是否更新过数据
                 if (oldPeer != null &&
-                        oldPeer.getLastConnectTime() + PestilenceApplication.config.getTrackerInterval()
+                        oldPeer.getLastConnectTime() + VirusUtils.config.getTrackerInterval()
                                 * ApiConst.SECOND_UNIT < peer.getLastConnectTime()) {
                     return TrackerResponseUtils.error(TrackerResponseEnum.REPEAT_DOWNLOAD);
                 }
@@ -190,7 +191,7 @@ public class AnnounceController extends AnnounceImpl {
             // 上一次距离现在的连接时间(毫秒) = 当前时间戳 - 上一次连接时间戳
             long currentMillis = peer.getLastConnectTime() - oldPeer.getLastConnectTime();
             // 判断上一次到现在的连接时间是不是小于MIN_INTERVAL
-            if (currentMillis / ApiConst.SECOND_UNIT < PestilenceApplication.config.getTrackerMinInterval()) {
+            if (currentMillis / ApiConst.SECOND_UNIT < VirusUtils.config.getTrackerMinInterval()) {
                 return TrackerResponseUtils.error(TrackerResponseEnum.MIN_INTERVAL);
             }
             // 当前上传量： peer的上传 - oldPeer的上传

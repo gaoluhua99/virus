@@ -1,7 +1,7 @@
 package com.virus.pt.pestilence;
 
+import com.virus.pt.common.util.VirusUtils;
 import com.virus.pt.db.service.ConfigService;
-import com.virus.pt.model.dataobject.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Bean;
 public class PestilenceApplication {
     private static final Logger logger = LoggerFactory.getLogger(PestilenceApplication.class);
 
-    public static Config config;
-
     public static void main(String[] args) {
         SpringApplication.run(PestilenceApplication.class, args);
         logger.info("PestilenceApplication is running");
@@ -25,7 +23,7 @@ public class PestilenceApplication {
         return (args -> {
             // 先删除再缓存
             configService.removeRedisConfig();
-            config = configService.getConfig();
+            VirusUtils.config = configService.getConfig();
         });
     }
 }

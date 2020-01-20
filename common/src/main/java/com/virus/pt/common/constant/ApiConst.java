@@ -12,5 +12,6 @@ public class ApiConst {
     // 密码最大长度
     public static final int PASSWORD_MAX_LEN = 32;
     public static final int SECOND_UNIT = 1000;
-
+    // jwt user key
+    public static final String JWT_CLAIM_USER_ID = "userId";
 }

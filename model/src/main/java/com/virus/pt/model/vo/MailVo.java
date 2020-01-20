@@ -1,6 +1,7 @@
 package com.virus.pt.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,16 +19,28 @@ import java.util.Date;
 @Setter
 @ToString
 public class MailVo {
-    private String id;//邮件id
-    private String from;//邮件发送人
-    private String to;//邮件接收人
-    private String subject;//邮件主题
-    private String text;//邮件内容
-    private Date sentDate;//发送时间
-    private String cc; //抄送
-    private String bcc; //密送
-    private String status; //状态
-    private String error; //报错信息
+    @ApiModelProperty(value = "邮件id", example = "1", required = true)
+    private String id;
+    @ApiModelProperty(value = "邮件发送人", example = "123456@qq.com", required = true)
+    private String from;
+    @ApiModelProperty(value = "邮件接收人", example = "123456@qq.com", required = true)
+    private String to;
+    @ApiModelProperty(value = "邮件主题", example = "Virus", required = true)
+    private String subject;
+    @ApiModelProperty(value = "邮件内容", example = "Virus邀请码", required = true)
+    private String text;
+    @ApiModelProperty(value = "发送时间", required = true)
+    private Date sentDate;
+    @ApiModelProperty(value = "抄送")
+    private String cc;
+    @ApiModelProperty(value = "密送")
+    private String bcc;
+    @ApiModelProperty(value = "状态")
+    private String status;
+    @ApiModelProperty(value = "报错信息", example = "xxxx")
+    private String error;
+
+    @ApiModelProperty(value = "邮件附件")
     @JsonIgnore
-    private MultipartFile[] multipartFiles;//邮件附件
+    private MultipartFile[] multipartFiles;
 }

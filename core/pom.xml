@@ -12,6 +12,11 @@
     <artifactId>core</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!--virus modules-->
         <dependency>
             <groupId>com.virus</groupId>

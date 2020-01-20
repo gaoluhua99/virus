@@ -41,7 +41,7 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigDao, Config> implements
     public Config getConfig() throws TipException {
         Config config = getRedisConfig();
         if (config == null) {
-            config = this.list().get(0);
+            config = baseMapper.selectByVersion();
             if (config == null) {
                 throw new TipException(ResultEnum.CONFIG_ERROR);
             } else {

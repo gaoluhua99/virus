@@ -23,6 +23,8 @@ config:
     path: /virus
     # url映射 修改后端还必须修改前端
     url:
+      config:
+        value: /config
       auth:
         value: /auth
         login: /login
