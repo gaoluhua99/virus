@@ -11,9 +11,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ConfigDto {
-    @ApiModelProperty(value = "版本号", example = "1")
-    private Integer version;
-
     @ApiModelProperty(value = "邀请功能状态", example = "true")
     private Boolean inviteState;
 
@@ -22,4 +19,5 @@ public class ConfigDto {
 
     @ApiModelProperty(value = "注册功能状态", example = "true")
     private Boolean registerState;
+
 }

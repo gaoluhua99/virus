@@ -11,24 +11,24 @@ import com.virus.pt.model.dataobject.Config;
  * @email zzy.main@gmail.com
  */
 public interface ConfigService extends IService<Config> {
-    Config getConfig() throws TipException;
+    Config get() throws TipException;
 
     /**
      * 获取Redis中全局配置参数
      *
      * @return 全局配置参数
      */
-    Config getRedisConfig();
+    Config getFromRedis();
 
     /**
      * 存储config
      *
      * @param config 配置
      */
-    void saveRedisConfig(Config config);
+    void saveToRedis(Config config);
 
     /**
      * 移除config
      */
-    boolean removeRedisConfig();
+    boolean removeFromRedis();
 }

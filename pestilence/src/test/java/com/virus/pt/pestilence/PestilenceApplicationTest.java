@@ -1,5 +1,8 @@
 package com.virus.pt.pestilence;
 
+import com.virus.pt.common.constant.ApiConst;
+import com.virus.pt.common.util.JwtUtils;
+import com.virus.pt.common.util.VirusUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,4 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SpringBootTest
 class PestilenceApplicationTest {
+    @Test
+    public void test() {
+        System.out.println(JwtUtils.createJWTToken(VirusUtils.config.getTokenSecret(), 1, VirusUtils.config.getTokenExp()));
+    }
 }

@@ -43,5 +43,7 @@ public class Config implements Serializable {
     private String imdbKey;
     private Integer trackerInterval;
     private Integer trackerMinInterval;
+    // web img
+    private String webHeadImgUrl;
     private Boolean isDelete;
 }

@@ -25,6 +25,7 @@ config:
     url:
       config:
         value: /config
+        user: /user
       auth:
         value: /auth
         login: /login

@@ -13,7 +13,7 @@ import java.util.List;
  * @email zzy.main@gmail.com
  */
 public interface RoleDao extends BaseMapper<Role> {
-    @Select(value = "SELECT t_role.* FROM t_user_auth, t_role, t_user_role WHERE t_user_auth.id = #{userAuthId} AND t_user_auth.id = t_user_role.fk_user_auth_id AND t_role.id = t_user_role.fk_role_id")
+    @Select(value = "SELECT t_role.* FROM t_user_auth, t_role, t_user_role WHERE t_user_auth.id = #{userAuthId} AND t_user_auth.id = t_user_role.fk_user_auth_id AND t_role.id = t_user_role.fk_role_id AND t_user_auth.is_delete = false AND t_role.is_delete = false AND t_user_role.is_delete = false")
     List<Role> selectByUserAuthId(long userAuthId);
 }
 

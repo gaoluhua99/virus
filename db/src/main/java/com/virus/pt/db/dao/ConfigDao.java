@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
  * @email zzy.main@gmail.com
  */
 public interface ConfigDao extends BaseMapper<Config> {
-    @Select(value = "SELECT * from t_config where version = (select max(version) from t_config)")
+    @Select(value = "SELECT * from t_config where version = (select max(version) from t_config where is_delete = false)")
     Config selectByVersion();
 }
 

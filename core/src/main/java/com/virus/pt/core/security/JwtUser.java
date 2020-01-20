@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * @author intent
@@ -18,13 +19,13 @@ import java.util.Collection;
 @ToString
 public class JwtUser implements UserDetails {
     private static final long serialVersionUID = -3876659361096147396L;
-    private Integer id;
-    private String email;
-    private String password;
+    private Long id;
+    private Date created;
+    private Date modified;
+    private String ukEmail;
+    private String passwordHash;
     private boolean isActivation;
     private boolean isDelete;
-    private Long created;
-    private Long modify;
     private Collection<? extends GrantedAuthority> authorities;
 
     @Override
@@ -34,12 +35,12 @@ public class JwtUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return passwordHash;
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return ukEmail;
     }
 
     @Override

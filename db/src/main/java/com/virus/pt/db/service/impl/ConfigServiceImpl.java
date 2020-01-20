@@ -33,19 +33,19 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigDao, Config> implements
     private ValueOperations<String, Object> valueOperations;
 
     @Override
-    public void saveRedisConfig(Config config) {
+    public void saveToRedis(Config config) {
         valueOperations.set(RedisConst.CONFIG_PREFIX, config, Duration.ofSeconds(RedisConst.CONFIG_EXP));
     }
 
     @Override
-    public Config getConfig() throws TipException {
-        Config config = getRedisConfig();
+    public Config get() throws TipException {
+        Config config = getFromRedis();
         if (config == null) {
             config = baseMapper.selectByVersion();
             if (config == null) {
                 throw new TipException(ResultEnum.CONFIG_ERROR);
             } else {
-                saveRedisConfig(config);
+                saveToRedis(config);
                 logger.info("缓存Config到Redis");
             }
         }
@@ -53,12 +53,12 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigDao, Config> implements
     }
 
     @Override
-    public Config getRedisConfig() {
+    public Config getFromRedis() {
         return (Config) valueOperations.get(RedisConst.CONFIG_PREFIX);
     }
 
     @Override
-    public boolean removeRedisConfig() {
+    public boolean removeFromRedis() {
         return redisTemplate.delete(RedisConst.CONFIG_PREFIX);
     }
 }

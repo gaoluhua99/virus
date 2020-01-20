@@ -22,8 +22,8 @@ public class PestilenceApplication {
     CommandLineRunner init(ConfigService configService) {
         return (args -> {
             // 先删除再缓存
-            configService.removeRedisConfig();
-            VirusUtils.config = configService.getConfig();
+            configService.removeFromRedis();
+            VirusUtils.config = configService.get();
         });
     }
 }
