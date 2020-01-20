@@ -13,7 +13,11 @@ import com.virus.pt.model.dataobject.UserData;
 public interface UserDataService extends IService<UserData> {
     void saveToRedis(UserData userData);
 
+    UserData getRedisById(long id);
+
     UserData getRedisByPasskey(String passkey);
+
+    UserData getById(long id) throws TipException;
 
     UserData getByPasskey(String passkey) throws TipException;
 

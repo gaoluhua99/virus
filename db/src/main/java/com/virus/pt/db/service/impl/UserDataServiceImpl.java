@@ -33,13 +33,39 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
 
     @Override
     public void saveToRedis(UserData userData) {
-        valueOperations.set(RedisConst.USER_DATA_PREFIX + userData.getUkPasskey(), userData,
+        valueOperations.set(
+                RedisConst.USER_DATA_PREFIX + userData.getId() +
+                        RedisConst.REDIS_REGEX + userData.getUkPasskey(), userData,
                 Duration.ofSeconds(RedisConst.USER_DATA_EXP));
     }
 
     @Override
+    public UserData getRedisById(long id) {
+        return (UserData) valueOperations.get(RedisConst.USER_DATA_PREFIX + id
+                + RedisConst.REDIS_REGEX + RedisConst.REDIS_ALL_KEY);
+    }
+
+    @Override
     public UserData getRedisByPasskey(String passkey) {
-        return (UserData) valueOperations.get(RedisConst.USER_DATA_PREFIX + passkey);
+        return (UserData) valueOperations.get(RedisConst.USER_DATA_PREFIX + RedisConst.REDIS_ALL_KEY
+                + RedisConst.REDIS_REGEX + passkey);
+    }
+
+    @Override
+    public UserData getById(long id) throws TipException {
+        UserData userData = getRedisById(id);
+        if (userData == null) {
+            userData = this.getOne(new QueryWrapper<UserData>()
+                    .eq("id", id)
+                    .eq("is_delete", false));
+            if (userData == null) {
+                throw new TipException(ResultEnum.USER_EMPTY_ERROR);
+            } else {
+                saveToRedis(userData);
+                logger.info("缓存UserData到Redis: {}", userData);
+            }
+        }
+        return userData;
     }
 
     @Override
