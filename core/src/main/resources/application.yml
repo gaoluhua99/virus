@@ -15,7 +15,7 @@ config:
     # 名称
     name: Virus
     # virus的host
-    host: localhost
+    host: 'http://localhost'
     # virus的port
     port: 11111
     # 是否用到https
@@ -57,7 +57,7 @@ config:
     # pestilence的名称
     name: Pestilence
     # pestilence的host
-    host: localhost
+    host: 'http://localhost'
     # pestilence的端口
     port: 22222
     # 是否用到https
@@ -69,7 +69,7 @@ config:
     # 名称
     name: Germ
     # germ的host
-    host: localhost
+    host: 'http://localhost'
     # germ的port
     port: 8080
     # 是否用到https

@@ -8,8 +8,9 @@ import lombok.ToString;
 
 /**
  * @author intent
- * @date 2019/7/25 16:20
- * @about <link href='http://zzyitj.xyz/'/>
+ * @version 1.0
+ * @date 2020/1/20 2:22 下午
+ * @email zzy.main@gmail.com
  */
 @ApiModel(description = "获取IPv6时需要的参数model")
 @Getter

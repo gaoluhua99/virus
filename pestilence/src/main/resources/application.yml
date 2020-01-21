@@ -10,7 +10,7 @@ config:
     # pestilence的名称
     name: Pestilence
     # pestilence的host
-    host: localhost
+    host: 'http://localhost'
     # pestilence的端口
     port: 22222
     # 是否用到https

@@ -3,6 +3,7 @@ package com.virus.pt.db.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.virus.pt.common.exception.TipException;
 import com.virus.pt.model.dataobject.UserData;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author intent
@@ -11,6 +12,9 @@ import com.virus.pt.model.dataobject.UserData;
  * @email zzy.main@gmail.com
  */
 public interface UserDataService extends IService<UserData> {
+    @Transactional(rollbackFor = Exception.class)
+    boolean saveRollback(UserData userData);
+
     void saveToRedis(UserData userData);
 
     UserData getRedisById(long id);

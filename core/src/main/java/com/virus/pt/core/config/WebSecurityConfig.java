@@ -46,25 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().requireCsrfProtectionMatcher(new RequestMatcher() {
-            //放行这几种请求
-            private Pattern allowedMethods = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
-            //放行rest请求，当然后面rest与web将会分开，到时这里可以删除
-            private RegexRequestMatcher unprotectedMatcher = new RegexRequestMatcher("^/rest/.*", null);
-
-            @Override
-            public boolean matches(HttpServletRequest request) {
-                if (allowedMethods.matcher(request.getMethod()).matches()) {
-                    return false;
-                }
-
-                String servletPath = request.getServletPath();
-                if (servletPath.contains("/druid")) {
-                    return false;
-                }
-                return !unprotectedMatcher.matches(request);
-            }
-        }).and()
+        http.csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()

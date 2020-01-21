@@ -38,7 +38,7 @@ public class PeerServiceImpl implements PeerService {
     private ValueOperations valueOperations;
 
     @Override
-    public void savePeer(long tid, Peer peer) {
+    public void save(long tid, Peer peer) {
         valueOperations.set(RedisConst.PEER_PREFIX + tid +
                 RedisConst.REDIS_REGEX + peer.getIp() +
                 RedisConst.REDIS_REGEX + peer.getPort() +
@@ -51,14 +51,14 @@ public class PeerServiceImpl implements PeerService {
     }
 
     @Override
-    public void saveAllPeer(long tid, List<Peer> peerList) {
+    public void saveAll(long tid, List<Peer> peerList) {
         peerList.forEach(peer -> {
-            savePeer(tid, peer);
+            save(tid, peer);
         });
     }
 
     @Override
-    public Peer getPeer(long tid, Peer peer) {
+    public Peer get(long tid, Peer peer) {
         return (Peer) valueOperations.get(RedisConst.PEER_PREFIX + tid +
                 RedisConst.REDIS_REGEX + peer.getIp() +
                 RedisConst.REDIS_REGEX + peer.getPort() +
@@ -66,7 +66,7 @@ public class PeerServiceImpl implements PeerService {
     }
 
     @Override
-    public List<Peer> getPeerList(long tid) {
+    public List<Peer> getList(long tid) {
         List<Peer> peerList = new ArrayList<>();
         Set<String> keys = redisTemplate.keys(RedisConst.PEER_PREFIX + tid + RedisConst.REDIS_ALL_KEY);
         if (keys != null && keys.size() > 0) {
@@ -78,7 +78,7 @@ public class PeerServiceImpl implements PeerService {
     }
 
     @Override
-    public void removePeer(long tid, Peer peer) {
+    public void remove(long tid, Peer peer) {
         redisTemplate.delete(RedisConst.PEER_PREFIX + tid +
                 RedisConst.REDIS_REGEX + peer.getIp() +
                 RedisConst.REDIS_REGEX + peer.getPort() +

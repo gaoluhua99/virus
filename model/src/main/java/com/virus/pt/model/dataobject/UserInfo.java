@@ -31,11 +31,11 @@ public class UserInfo implements Serializable {
     private Date modified;
     private Long fkUserAuthId;
     private Long fkUserDataId;
-    private String username;
+    private String ukUsername;
     private Boolean sex;
     private Long gold;
     private Long exp;
-    private Integer inviterId;
+    private Long inviterId;
     private String avatarUrl;
     private String ip;
     // 是否删除

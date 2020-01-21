@@ -42,6 +42,15 @@ public class MailServiceImpl implements MailService {
         }
     }
 
+    @Override
+    public MailVo sendActivationMail(String email, String subject, String text, String url) {
+        MailVo mailVo = new MailVo();
+        mailVo.setTo(email);
+        mailVo.setSubject(subject);
+        mailVo.setText(text.replaceAll("\\?url", url));
+        return sendMail(mailVo);
+    }
+
     //检测邮件信息类
     private void checkMail(MailVo mailVo) {
         if (StringUtils.isEmpty(mailVo.getTo())) {
@@ -71,7 +80,7 @@ public class MailServiceImpl implements MailService {
             //邮件收信人
             messageHelper.setSubject(mailVo.getSubject());
             //邮件主题
-            messageHelper.setText(mailVo.getText());
+            messageHelper.setText(mailVo.getText(), true);
             //邮件内容
             if (!StringUtils.isEmpty(mailVo.getCc())) {
                 //抄送

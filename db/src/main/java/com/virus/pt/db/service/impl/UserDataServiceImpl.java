@@ -32,6 +32,11 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
     private ValueOperations<String, Object> valueOperations;
 
     @Override
+    public boolean saveRollback(UserData userData) {
+        return save(userData);
+    }
+
+    @Override
     public void saveToRedis(UserData userData) {
         valueOperations.set(
                 RedisConst.USER_DATA_PREFIX + userData.getId() +

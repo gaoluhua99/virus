@@ -12,15 +12,15 @@ import java.util.List;
  */
 public interface PeerService {
 
-    void savePeer(long tid, Peer peer);
+    void save(long tid, Peer peer);
 
-    void saveAllPeer(long tid, List<Peer> peerList);
+    void saveAll(long tid, List<Peer> peerList);
 
-    Peer getPeer(long tid, Peer peer);
+    Peer get(long tid, Peer peer);
 
-    List<Peer> getPeerList(long tid);
+    List<Peer> getList(long tid);
 
-    void removePeer(long tid, Peer peer);
+    void remove(long tid, Peer peer);
 
     long getCount(long tid);
 

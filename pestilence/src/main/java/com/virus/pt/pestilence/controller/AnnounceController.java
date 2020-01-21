@@ -60,7 +60,7 @@ public class AnnounceController extends AnnounceImpl {
 
     @Override
     List<Peer> getAllPeers(Long tid) {
-        return peerService.getPeerList(tid);
+        return peerService.getList(tid);
     }
 
     /**
@@ -78,7 +78,7 @@ public class AnnounceController extends AnnounceImpl {
             // 判断是否加入过完成表
             checkAddTorrentStatus(peer, torrent.getId(), true);
             // 添加到peers
-            peerService.savePeer(torrent.getId(), peer);
+            peerService.save(torrent.getId(), peer);
             // 统计正在做种、下载人数
             return TrackerResponseUtils.success(peers,
                     peerService.getSeedingCount(torrent.getId()), peerService.getDownloadingCount(torrent.getId()));
@@ -90,7 +90,7 @@ public class AnnounceController extends AnnounceImpl {
                 return TrackerResponseUtils.error(TrackerResponseEnum.NO_PEERS);
             } else {
                 peer.setState(PeerStateEnum.DOWNLOADING.getCode());
-                Peer oldPeer = peerService.getPeer(torrent.getId(), peer);
+                Peer oldPeer = peerService.get(torrent.getId(), peer);
                 // 判断种子在TrackerResponse.INTERVAL时间内是否更新过数据
                 if (oldPeer != null &&
                         oldPeer.getLastConnectTime() + VirusUtils.config.getTrackerInterval()
@@ -100,7 +100,7 @@ public class AnnounceController extends AnnounceImpl {
                 // 判断该种子是否加入过下载表
                 checkAddTorrentStatus(peer, torrent.getId(), false);
                 // 添加到peers
-                peerService.savePeer(torrent.getId(), peer);
+                peerService.save(torrent.getId(), peer);
                 // 统计正在做种、下载人数
                 return TrackerResponseUtils.success(peers,
                         peerService.getSeedingCount(torrent.getId()), peerService.getDownloadingCount(torrent.getId()));
@@ -132,7 +132,7 @@ public class AnnounceController extends AnnounceImpl {
         // 判断是否加入过完成表
         checkAddTorrentStatus(peer, torrent.getId(), true);
         // 判断是否在peers里面，在则设置新的状态，没在则直接加入peers
-        Peer oldPeer = peerService.getPeer(torrent.getId(), peer);
+        Peer oldPeer = peerService.get(torrent.getId(), peer);
         if (oldPeer != null) {
             // 更新连接时间
             // 当前时间戳 - 上一次连接时间戳
@@ -140,7 +140,7 @@ public class AnnounceController extends AnnounceImpl {
             peer.setConnectTime(oldPeer.getConnectTime() + currentMillis);
         }
         peer.setState(PeerStateEnum.SEEDING.getCode());
-        peerService.savePeer(torrent.getId(), peer);
+        peerService.save(torrent.getId(), peer);
         // 统计正在做种、下载人数
         return TrackerResponseUtils.success(peers,
                 peerService.getSeedingCount(torrent.getId()), peerService.getDownloadingCount(torrent.getId()));
@@ -149,7 +149,7 @@ public class AnnounceController extends AnnounceImpl {
     @Override
     String stop(Peer peer, List<Peer> peers, Torrent torrent) {
         // 判断是否在peers里面，在则删除
-        Peer oldPeer = peerService.getPeer(torrent.getId(), peer);
+        Peer oldPeer = peerService.get(torrent.getId(), peer);
         if (oldPeer != null) {
             // 统计和更新数据
             peer.setState(oldPeer.getState());
@@ -172,7 +172,7 @@ public class AnnounceController extends AnnounceImpl {
                     currentDownload, oldPeer.getConnectTime() + currentMillis, peer.getState());
             // 更新上传、下载量
             userDataService.updateDataToRedis(peer.getPasskey(), currentUpload, currentDownload);
-            peerService.removePeer(torrent.getId(), peer);
+            peerService.remove(torrent.getId(), peer);
         }
         return TrackerResponseUtils.success();
     }
@@ -185,7 +185,7 @@ public class AnnounceController extends AnnounceImpl {
     @Override
     String work(Peer peer, List<Peer> peers, Torrent torrent) {
         // 判断是否在peers里面
-        Peer oldPeer = peerService.getPeer(torrent.getId(), peer);
+        Peer oldPeer = peerService.get(torrent.getId(), peer);
         if (oldPeer != null) {
             peer.setState(oldPeer.getState());
             // 上一次距离现在的连接时间(毫秒) = 当前时间戳 - 上一次连接时间戳
@@ -214,7 +214,7 @@ public class AnnounceController extends AnnounceImpl {
             userDataService.updateDataToRedis(peer.getPasskey(), currentUpload, currentDownload);
             // 更新连接时间
             peer.setConnectTime(oldPeer.getConnectTime() + currentMillis);
-            peerService.savePeer(torrent.getId(), peer);
+            peerService.save(torrent.getId(), peer);
         }
         return TrackerResponseUtils.error(TrackerResponseEnum.ERROR);
     }
