@@ -41,7 +41,7 @@ public class TorrentServiceImpl extends ServiceImpl<TorrentDao, Torrent> impleme
     }
 
     @Override
-    public Torrent getById(long tid) throws TipException {
+    public Torrent getByTid(long tid) throws TipException {
         Torrent torrent = getRedisById(tid);
         if (torrent == null) {
             torrent = getOne(new QueryWrapper<Torrent>()

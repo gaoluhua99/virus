@@ -19,10 +19,10 @@ public interface UserService {
      * @param registerVO 用户参数
      * @return 是否创建完成
      * @throws com.virus.pt.common.exception.TipException
-     * @throws DataAccessException 唯一键约束，已经有了该Email或该昵称
+     * @throws DataAccessException                        唯一键约束，已经有了该Email或该昵称
      */
     @Transactional(rollbackFor = Exception.class)
-    boolean saveUser(RegisterVo registerVO) throws TipException, DataAccessException;
+    boolean saveRollback(RegisterVo registerVO) throws TipException, DataAccessException;
 
     /**
      * 根据email和password获取用户，即用户登录
@@ -32,9 +32,14 @@ public interface UserService {
      * @return 用户
      * @throws com.virus.pt.common.exception.TipException
      */
-    UserDto getUserByLogin(String email, String password) throws TipException;
+    UserDto login(String email, String password) throws TipException;
 
-    UserDto getUserById(int uid) throws TipException;
+    /**
+     * 注销用户
+     *
+     * @param userAuthId uid
+     */
+    void logout(long userAuthId) throws TipException;
 
     /**
      * 存储激活码

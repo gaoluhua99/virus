@@ -30,4 +30,9 @@ public class VirusUtils {
         int code = random.nextInt(99999999);
         return DigestUtils.md5Hex(String.valueOf(code).getBytes());
     }
+
+    public static String getNewToken(long uid) {
+        // 生成token
+        return JwtUtils.createJWTToken(VirusUtils.config.getTokenSecret(), uid, VirusUtils.config.getTokenExp());
+    }
 }

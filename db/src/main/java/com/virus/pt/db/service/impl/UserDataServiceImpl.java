@@ -57,7 +57,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
     }
 
     @Override
-    public UserData getById(long id) throws TipException {
+    public UserData getByUid(long id) throws TipException {
         UserData userData = getRedisById(id);
         if (userData == null) {
             userData = this.getOne(new QueryWrapper<UserData>()
@@ -95,7 +95,8 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
         UserData userData = new UserData();
         userData.setUserStatus((short) UserDataEnum.BAN.getCode());
         return this.update(userData, new UpdateWrapper<UserData>()
-                .eq("uk_passkey", passkey));
+                .eq("uk_passkey", passkey)
+                .eq("is_delete", false));
     }
 
     @Override
@@ -104,5 +105,15 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
         userData.setUploaded(userData.getUploaded() + upload);
         userData.setDownloaded(userData.getDownloaded() + download);
         saveToRedis(userData);
+    }
+
+    @Override
+    public boolean updateData(String passkey, long upload, long download) {
+        UserData userData = new UserData();
+        userData.setUploaded(upload);
+        userData.setDownloaded(download);
+        return this.update(userData, new UpdateWrapper<UserData>()
+                .eq("uk_passkey", passkey)
+                .eq("is_delete", false));
     }
 }

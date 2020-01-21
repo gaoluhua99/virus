@@ -43,7 +43,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public MailVo sendActivationMail(String email, String subject, String text, String url) {
+    public MailVo sendMail(String email, String subject, String text, String url) {
         MailVo mailVo = new MailVo();
         mailVo.setTo(email);
         mailVo.setSubject(subject);

@@ -37,6 +37,8 @@ public enum ResultEnum {
     USER_EMPTY_ERROR(4030, "用户不存在"),
     SIGN_RECORD_ERROR(4040, "签到错误，今天已签到"),
     SIGN_RECORD_EXP_ERROR(4041, "签到成功但经验更新错误"),
+    LOGOUT_ERROR(4050, "用户注销错误"),
+    LOGOUT_DATA_UPDATE_ERROR(4051, "用户注销时数据更新错误"),
     // 参数错误
     ARGS_ERROR(5000, "参数错误"),
     EMAIL_ERROR(5010, "邮箱错误"),

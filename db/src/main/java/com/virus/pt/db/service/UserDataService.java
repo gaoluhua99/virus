@@ -21,11 +21,13 @@ public interface UserDataService extends IService<UserData> {
 
     UserData getRedisByPasskey(String passkey);
 
-    UserData getById(long id) throws TipException;
+    UserData getByUid(long id) throws TipException;
 
     UserData getByPasskey(String passkey) throws TipException;
 
     boolean setStatus(String passkey, int status);
 
     void updateDataToRedis(String passkey, long upload, long download);
+
+    boolean updateData(String passkey, long upload, long download);
 }

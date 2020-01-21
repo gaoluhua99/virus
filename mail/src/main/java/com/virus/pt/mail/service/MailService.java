@@ -11,5 +11,5 @@ import com.virus.pt.model.vo.MailVo;
 public interface MailService {
     MailVo sendMail(MailVo mailVo);
 
-    MailVo sendActivationMail(String email, String subject, String text, String url);
+    MailVo sendMail(String email, String subject, String text, String url);
 }

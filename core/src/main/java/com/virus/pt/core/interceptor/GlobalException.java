@@ -27,7 +27,7 @@ public class GlobalException {
     @ExceptionHandler(value = TipException.class)
     @ResponseBody
     public ResponseEntity<String> tipException(HttpServletRequest request, TipException e) {
-        e.printStackTrace();
+//        e.printStackTrace();
         logger.error("ip: {} url: {}, message: {}", IPUtils.getIpAddr(request), request.getRequestURI(), e.getResultEnum().toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getResultEnum().toString());
     }

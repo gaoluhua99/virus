@@ -15,7 +15,7 @@ public interface TorrentService extends IService<Torrent> {
 
     Torrent getRedisById(long id);
 
-    Torrent getById(long id) throws TipException;
+    Torrent getByTid(long id) throws TipException;
 
     Torrent getByHash(byte[] infoHash);
 }

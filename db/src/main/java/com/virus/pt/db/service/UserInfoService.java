@@ -1,6 +1,7 @@
 package com.virus.pt.db.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.virus.pt.common.exception.TipException;
 import com.virus.pt.model.dataobject.UserInfo;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,4 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserInfoService extends IService<UserInfo> {
     @Transactional(rollbackFor = Exception.class)
     boolean saveRollback(UserInfo userInfo);
+
+    UserInfo getByUserAuthId(long userAuthId) throws TipException;
 }

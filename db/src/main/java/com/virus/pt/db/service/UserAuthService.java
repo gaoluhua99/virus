@@ -1,6 +1,7 @@
 package com.virus.pt.db.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.virus.pt.common.exception.TipException;
 import com.virus.pt.model.dataobject.UserAuth;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,4 +16,12 @@ public interface UserAuthService extends IService<UserAuth> {
     boolean saveRollback(UserAuth userAuth);
 
     boolean updateActive(String email);
+
+    UserAuth login(String email, String password) throws TipException;
+
+    UserAuth getByEmail(String email);
+
+    boolean existByEmail(String email);
+
+    boolean resetPass(String email, String password) throws TipException;
 }

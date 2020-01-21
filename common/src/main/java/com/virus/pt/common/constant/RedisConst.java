@@ -36,6 +36,8 @@ public class RedisConst {
     public static final String CAPTCHA_PREFIX = "captcha:";
     // 验证码过期时间：5分钟
     public static final long CAPTCHA_EXP = 300;
-    public static final String ACTIVATION_CODE_PREFIX = "activationCode";
+    public static final String ACTIVATION_CODE_PREFIX = "activationCode:";
     public static final long ACTIVATION_CODE_EXP = 3 * ONE_DAT_EXP;
+    public static final String RESET_PASS_CODE_PREFIX = "resetPassCode:";
+    public static final long RESET_PASS_CODE_EXP = 3 * ONE_DAT_EXP;
 }

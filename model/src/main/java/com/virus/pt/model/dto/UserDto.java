@@ -19,6 +19,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserDto {
+
+    // UserAuth
     @ApiModelProperty(value = "uid", example = "1")
     private Long userAuthId;
 
@@ -30,23 +32,31 @@ public class UserDto {
 
     @ApiModelProperty(value = "email", example = "1428658308@qq.com")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String ukEmail;
+    private String email;
 
-    @ApiModelProperty(value = "昵称", example = "intent")
-    private String username;
+    @ApiModelProperty(value = "是否激活", example = "true")
+    private Boolean isActivation;
 
+    // UserData
     @ApiModelProperty(value = "passkey", example = "a88b78122abc866d9oc7acf0b7db048e")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String ukPasskey;
-
-    @ApiModelProperty(value = "性别true男false女", example = "false")
-    private Boolean sex;
+    private String passkey;
 
     @ApiModelProperty(value = "下载量", example = "0")
     private Long downloaded;
 
     @ApiModelProperty(value = "上传量", example = "0")
     private Long uploaded;
+
+    @ApiModelProperty(value = "用户状态", example = "1")
+    private Short status;
+
+    // UserInfo
+    @ApiModelProperty(value = "昵称", example = "intent")
+    private String username;
+
+    @ApiModelProperty(value = "性别true男false女", example = "false")
+    private Boolean sex;
 
     @ApiModelProperty(value = "金币", example = "0")
     private Long gold;
@@ -72,10 +82,4 @@ public class UserDto {
     @ApiModelProperty(value = "今天是否签到", example = "false")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean isSigned;
-
-    @ApiModelProperty(value = "用户状态", example = "1")
-    private Short userStatus;
-
-    @ApiModelProperty(value = "是否激活", example = "true")
-    private Boolean isActivation;
 }

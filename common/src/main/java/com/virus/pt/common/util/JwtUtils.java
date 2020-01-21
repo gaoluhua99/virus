@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class JwtUtils {
 
-    public static String createJWTToken(String secret, int userId, long exp) {
+    public static String createJWTToken(String secret, long userId, long exp) {
         long nowMillis = System.currentTimeMillis();
         long expMillis = nowMillis + exp * ApiConst.SECOND_UNIT;
         return JWT.create()
