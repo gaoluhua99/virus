@@ -21,11 +21,16 @@ config:
     # 是否用到https
     useHttps: false
     path: /virus
+    # 公告配置
+    notice:
+      # 默认获取公告条数
+      len: 3
     # url映射 修改后端还必须修改前端
     url:
       config:
         value: /config
         user: /user
+        notice: /notice
       auth:
         value: /auth
         login: /login

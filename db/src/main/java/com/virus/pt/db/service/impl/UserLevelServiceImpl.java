@@ -6,6 +6,8 @@ import com.virus.pt.db.service.UserLevelService;
 import com.virus.pt.model.dataobject.UserLevel;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author intent
  * @version 1.0
@@ -14,4 +16,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserLevelServiceImpl extends ServiceImpl<UserLevelDao, UserLevel> implements UserLevelService {
+
+    @Override
+    public List<UserLevel> getAll() {
+        return baseMapper.selectAll();
+    }
 }
