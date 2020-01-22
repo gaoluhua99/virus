@@ -71,7 +71,7 @@ public class UserController {
 
     @ApiOperation(value = "根据用户名判断用户是否存在")
     @GetMapping(value = "${config.virus.url.user.existByUsername}")
-    public ResponseEntity<Boolean> getUserByUsername(@PathVariable("username") String username) throws TipException {
+    public ResponseEntity<Boolean> getUserByUsername(@PathVariable("username") String username) {
         return ResponseEntity.ok(userInfoService.existByUsername(username));
     }
 

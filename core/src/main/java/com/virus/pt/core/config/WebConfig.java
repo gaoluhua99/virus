@@ -14,11 +14,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     private static final Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
-    @Value("${server.servlet.context-path}")
-    private String serverPath;
+    @Value("${config.virus.host}")
+    private String virusHost;
 
     @Value("${server.port}")
     private Integer serverPort;
+
+    @Value("${server.servlet.context-path}")
+    private String serverPath;
 
     @Value("${config.virus.file.staticAccessPath}")
     private String staticAccessPath;
@@ -32,7 +35,13 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/" + staticAccessPath + "/**")
                 .addResourceLocations("file:" + realPath);
         logger.info("文件真实目录: {}**", realPath);
-        logger.info("文件对外暴露的访问路径: http://localhost:{}/{}/{}/**", serverPort, serverPath, staticAccessPath);
+        if (serverPath.substring(0, 1).equals("/")) {
+            logger.info("文件对外暴露的访问路径: http://{}:{}{}/{}/**",
+                    virusHost, serverPort, serverPath, staticAccessPath);
+        } else {
+            logger.info("文件对外暴露的访问路径: http://{}:{}/{}/{}/**",
+                    virusHost, serverPort, serverPath, staticAccessPath);
+        }
     }
 
     @Override

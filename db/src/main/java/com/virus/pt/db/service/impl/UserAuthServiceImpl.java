@@ -64,8 +64,10 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthDao, UserAuth> impl
     }
 
     @Override
-    public boolean existByEmail(String email) throws TipException {
-        return getByEmail(email) != null;
+    public boolean existByEmail(String email) {
+        return getOne(new QueryWrapper<UserAuth>()
+                .eq("uk_email", email)
+                .eq("is_delete", false)) != null;
     }
 
     @Override
