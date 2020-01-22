@@ -69,6 +69,7 @@ public class UserDto {
     private Long inviterId;
 
     @ApiModelProperty(value = "用户头像链接", example = "xxx")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String avatarUrl;
 
     @ApiModelProperty(value = "注册时的ip地址", example = "127.0.0.1")

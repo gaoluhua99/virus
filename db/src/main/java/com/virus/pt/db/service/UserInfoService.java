@@ -16,4 +16,8 @@ public interface UserInfoService extends IService<UserInfo> {
     boolean saveRollback(UserInfo userInfo);
 
     UserInfo getByUserAuthId(long userAuthId) throws TipException;
+
+    boolean existByUsername(String username);
+
+    boolean updateByUserAuthId(UserInfo userInfo);
 }

@@ -174,4 +174,12 @@ public class UserServiceImpl implements UserService {
     public void removeResetPassCode(String code) {
         redisTemplate.delete(RedisConst.RESET_PASS_CODE_PREFIX + code);
     }
+
+    @Override
+    public UserDto getByUserAuthId(long userAuthId) throws TipException {
+        UserAuth userAuth = userAuthService.getById(userAuthId);
+        UserInfo userInfo = userInfoService.getByUserAuthId(userAuth.getId());
+        UserData userData = userDataService.getByUid(userInfo.getFkUserDataId());
+        return UserBo.getUserDto(userAuth, userData, userInfo, VirusUtils.getNewToken(userAuth.getId()));
+    }
 }

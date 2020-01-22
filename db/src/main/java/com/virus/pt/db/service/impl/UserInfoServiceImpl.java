@@ -1,6 +1,9 @@
 package com.virus.pt.db.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.virus.pt.common.enums.ResultEnum;
 import com.virus.pt.common.exception.TipException;
 import com.virus.pt.db.dao.UserInfoDao;
@@ -18,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfo> implements UserInfoService {
     @Override
     public boolean saveRollback(UserInfo userInfo) {
-        return save(userInfo);
+        return SqlHelper.retBool(baseMapper.insert(userInfo));
     }
 
     @Override
@@ -28,5 +31,19 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfo> impl
             throw new TipException(ResultEnum.USER_EMPTY_ERROR);
         }
         return userInfo;
+    }
+
+    @Override
+    public boolean existByUsername(String username) {
+        return getOne(new QueryWrapper<UserInfo>()
+                .eq("uk_username", username)
+                .eq("is_delete", false)) != null;
+    }
+
+    @Override
+    public boolean updateByUserAuthId(UserInfo userInfo) {
+        return this.update(userInfo, new UpdateWrapper<UserInfo>()
+                .eq("fk_user_auth_id", userInfo.getFkUserAuthId())
+                .eq("is_delete", false));
     }
 }

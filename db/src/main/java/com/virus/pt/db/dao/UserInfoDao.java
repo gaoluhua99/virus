@@ -2,6 +2,7 @@ package com.virus.pt.db.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.virus.pt.model.dataobject.UserInfo;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -11,6 +12,9 @@ import org.apache.ibatis.annotations.Select;
  * @email zzy.main@gmail.com
  */
 public interface UserInfoDao extends BaseMapper<UserInfo> {
+    @Insert(value = "INSERT INTO t_user_info (created, modified, fk_user_auth_id, fk_user_data_id, uk_username, sex, ip) VALUES (#{created}, #{modified}, #{fkUserAuthId}, #{fkUserDataId}, #{ukUsername}, #{sex}, INET6_ATON(#{ip}))")
+    int insert(UserInfo userInfo);
+
     @Select(value = "SELECT id, created, modified, fk_user_auth_id, fk_user_data_id, uk_username, sex, gold, exp, inviter_id, avatar_url, INET6_NTOA(ip) as ip FROM t_user_info WHERE fk_user_auth_id = #{userAuthId} AND is_delete = false")
     UserInfo selectByUserAuthId(long userAuthId);
 }

@@ -18,12 +18,12 @@ public class UserBo {
         UserDto userDTO = new UserDto();
         if (userAuth != null) {
             userDTO.setUserAuthId(userAuth.getId());
-            userDTO.setCreate(userAuth.getCreated().getTime());
-            userDTO.setModify(userAuth.getModified().getTime());
             userDTO.setEmail(userAuth.getUkEmail());
             userDTO.setIsActivation(userAuth.getIsActivation());
         }
         if (userData != null) {
+            userDTO.setCreate(userData.getCreated().getTime());
+            userDTO.setModify(userData.getModified().getTime());
             userDTO.setPasskey(userData.getUkPasskey());
             userDTO.setUploaded(userData.getUploaded());
             userDTO.setDownloaded(userData.getDownloaded());

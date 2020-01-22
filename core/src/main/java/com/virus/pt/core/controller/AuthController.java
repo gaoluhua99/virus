@@ -167,7 +167,6 @@ public class AuthController {
     @GetMapping(value = "${config.virus.url.auth.activation}")
     public ResponseEntity<String> activation(@PathVariable("code") String code,
                                              @ApiIgnore HttpServletRequest request) throws TipException {
-        logger.info("ip: {} code: {}", IPUtils.getIpAddr(request), code);
         boolean isActivation = userService.activateUser(code);
         if (isActivation) {
             logger.info("ip: {}, code: {} 用户激活", IPUtils.getIpAddr(request), code);
@@ -223,7 +222,7 @@ public class AuthController {
             dataType = "string", paramType = "header", required = true)
     @PostMapping(value = "${config.virus.url.auth.logout}")
     public ResponseEntity<?> logout(@ApiIgnore HttpServletRequest request) throws TipException {
-        Integer userId = JwtUtils.getUserIdFromRequest(request);
+        Long userId = JwtUtils.getUserIdFromRequest(request);
         // 同步redis的数据到数据库，然后删除redis中的数据
         userService.logout(userId);
         logger.info("userId: {} 已注销", userId);

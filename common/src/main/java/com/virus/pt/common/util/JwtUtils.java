@@ -40,7 +40,7 @@ public class JwtUtils {
      * @return
      * @throws TipException
      */
-    public static Integer getUserIdFromRequest(HttpServletRequest request) throws TipException {
+    public static Long getUserIdFromRequest(HttpServletRequest request) throws TipException {
         if (request == null) {
             throw new TipException(ResultEnum.ARGS_ERROR);
         }
@@ -49,12 +49,12 @@ public class JwtUtils {
         return getUserId(token);
     }
 
-    public static Integer getUserId(String token) throws TipException {
+    public static Long getUserId(String token) throws TipException {
         if (StringUtils.isBlank(token)) {
             throw new TipException(ResultEnum.TOKEN_EMPTY_ERROR);
         }
         try {
-            return JWT.decode(token).getClaim(ApiConst.JWT_CLAIM_USER_ID).asInt();
+            return JWT.decode(token).getClaim(ApiConst.JWT_CLAIM_USER_ID).asLong();
         } catch (JWTDecodeException e) {
             throw new TipException(ResultEnum.TOKEN_DECODE_ERROR);
         }

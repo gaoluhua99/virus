@@ -13,10 +13,13 @@ import com.virus.pt.model.dataobject.UserData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * @author intent
@@ -27,6 +30,9 @@ import java.time.Duration;
 @Service
 public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> implements UserDataService {
     private static final Logger logger = LoggerFactory.getLogger(UserDataServiceImpl.class);
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Autowired
     private ValueOperations<String, Object> valueOperations;
@@ -46,14 +52,26 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
 
     @Override
     public UserData getRedisById(long id) {
-        return (UserData) valueOperations.get(RedisConst.USER_DATA_PREFIX + id
+        // 先获取键名再获取数据
+        Set<String> keySet = redisTemplate.keys(RedisConst.USER_DATA_PREFIX + id
                 + RedisConst.REDIS_REGEX + RedisConst.REDIS_ALL_KEY);
+        if (keySet != null && keySet.size() > 0) {
+            return (UserData) valueOperations.get(keySet.iterator().next());
+        } else {
+            return null;
+        }
     }
 
     @Override
     public UserData getRedisByPasskey(String passkey) {
-        return (UserData) valueOperations.get(RedisConst.USER_DATA_PREFIX + RedisConst.REDIS_ALL_KEY
+        // 先获取键名再获取数据
+        Set<String> keySet = redisTemplate.keys(RedisConst.USER_DATA_PREFIX + RedisConst.REDIS_ALL_KEY
                 + RedisConst.REDIS_REGEX + passkey);
+        if (keySet != null && keySet.size() > 0) {
+            return (UserData) valueOperations.get(keySet.iterator().next());
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -70,6 +88,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
                 logger.info("缓存UserData到Redis: {}", userData);
             }
         }
+        userData.setModified(new Date());
         return userData;
     }
 
@@ -87,6 +106,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
                 logger.info("缓存UserData到Redis: {}", userData);
             }
         }
+        userData.setModified(new Date());
         return userData;
     }
 
@@ -104,11 +124,13 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
         UserData userData = getRedisByPasskey(passkey);
         userData.setUploaded(userData.getUploaded() + upload);
         userData.setDownloaded(userData.getDownloaded() + download);
+        userData.setModified(new Date());
         saveToRedis(userData);
     }
 
     @Override
     public boolean updateData(String passkey, long upload, long download) {
+        updateDataToRedis(passkey, upload, download);
         UserData userData = new UserData();
         userData.setUploaded(upload);
         userData.setDownloaded(download);

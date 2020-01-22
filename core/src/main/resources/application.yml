@@ -40,6 +40,11 @@ config:
         activation: '/activation/{code}'
         sendResetPassEmail: /send/reset/email
         resetPass: /reset/pass
+      user:
+        value: /user
+        existByUsername: '/exist/username/{username}'
+        existByEmail: '/exist/email/{email}'
+        avatar: /avatar
     # 上传文件配置，可直接get访问
     file:
       # 静态资源对外暴露的名称
@@ -71,7 +76,7 @@ config:
     # germ的host
     host: 'http://localhost'
     # germ的port
-    port: 8080
+    port: 4200
     # 是否用到https
     useHttps: false
     # 路径

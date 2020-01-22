@@ -86,7 +86,8 @@ public enum ResultEnum {
     FIND_WAIT_ERROR(5131, "查询候选错误"),
     REPEAT_WAIT_ERROR(5132, "重复候选"),
     ADMIN_PERMISSION_ERROR(6000, "没有权限"),
-    DB_UNIQUE_ERROR(7000, "唯一键约束");
+    DB_UNIQUE_ERROR(7000, "唯一键约束"),
+    DB_UPDATE_ERROR(7001, "更新数据错误");
     private int code;
     private String message;
 

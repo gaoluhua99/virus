@@ -37,7 +37,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
-        Integer uid = null;
+        Long uid = null;
         try {
             uid = JwtUtils.getUserIdFromRequest(request);
         } catch (TipException ignored) {

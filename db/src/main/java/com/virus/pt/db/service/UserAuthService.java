@@ -19,9 +19,11 @@ public interface UserAuthService extends IService<UserAuth> {
 
     UserAuth login(String email, String password) throws TipException;
 
-    UserAuth getByEmail(String email);
+    UserAuth getByEmail(String email) throws TipException;
 
-    boolean existByEmail(String email);
+    boolean existByEmail(String email) throws TipException;
+
+    UserAuth getById(long id) throws TipException;
 
     boolean resetPass(String email, String password) throws TipException;
 }

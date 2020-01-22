@@ -30,5 +30,6 @@ public class Notice implements Serializable {
     private Date modified;
     private String title;
     private String message;
+    private Boolean isOpen;
     private Boolean isDelete;
 }

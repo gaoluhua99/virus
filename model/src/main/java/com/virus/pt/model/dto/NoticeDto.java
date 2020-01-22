@@ -21,6 +21,9 @@ public class NoticeDto {
     @ApiModelProperty(value = "公告内容", example = "公告内容")
     private String message;
 
+    @ApiModelProperty(value = "是否展开", example = "true")
+    private Boolean isOpen;
+
     @ApiModelProperty(value = "公告创建时间", example = "1561004995625")
     private Long create;
 

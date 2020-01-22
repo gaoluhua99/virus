@@ -78,4 +78,6 @@ public interface UserService {
     String existResetPassCode(String code) throws TipException;
 
     void removeResetPassCode(String code);
+
+    UserDto getByUserAuthId(long userAuthId) throws TipException;
 }

@@ -52,15 +52,32 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthDao, UserAuth> impl
     }
 
     @Override
-    public UserAuth getByEmail(String email) {
-        return getOne(new QueryWrapper<UserAuth>()
+    public UserAuth getByEmail(String email) throws TipException {
+        UserAuth userAuth = getOne(new QueryWrapper<UserAuth>()
                 .eq("uk_email", email)
                 .eq("is_delete", false));
+        if (userAuth == null) {
+            throw new TipException(ResultEnum.USER_EMPTY_ERROR);
+        } else {
+            return userAuth;
+        }
     }
 
     @Override
-    public boolean existByEmail(String email) {
+    public boolean existByEmail(String email) throws TipException {
         return getByEmail(email) != null;
+    }
+
+    @Override
+    public UserAuth getById(long id) throws TipException {
+        UserAuth userAuth = this.getOne(new QueryWrapper<UserAuth>()
+                .eq("id", id)
+                .eq("is_delete", false));
+        if (userAuth == null) {
+            throw new TipException(ResultEnum.USER_EMPTY_ERROR);
+        } else {
+            return userAuth;
+        }
     }
 
     @Override
