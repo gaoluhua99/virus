@@ -1,8 +1,6 @@
 package com.virus.pt.model.dataobject;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -11,9 +9,7 @@ import java.io.Serializable;
  * @date 2019/7/24 11:43
  * @about <link href='http://zzyitj.xyz/'/>
  */
-@Setter
-@Getter
-@ToString
+@Data
 public class Peer implements Serializable {
     private static final long serialVersionUID = -6801111193543281051L;
 

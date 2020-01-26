@@ -1,16 +1,12 @@
 package com.virus.pt.model.dataobject;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Getter
-@Setter
-@ToString
+@Data
 @TableName(value = "t_config")
 public class Config implements Serializable {
     private static final long serialVersionUID = 830247103594848910L;

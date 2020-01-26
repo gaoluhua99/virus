@@ -13,6 +13,6 @@ import java.util.List;
  * @email zzy.main@gmail.com
  */
 public interface UserLevelDao extends BaseMapper<UserLevel> {
-    @Select(value = "SELECT * FROM t_user_level WHERE is_delete = false")
+    @Select(value = "SELECT * FROM t_user_level WHERE is_delete = false ORDER BY need_exp")
     List<UserLevel> selectAll();
 }

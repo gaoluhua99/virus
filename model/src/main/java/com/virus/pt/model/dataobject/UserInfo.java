@@ -1,9 +1,7 @@
 package com.virus.pt.model.dataobject;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,9 +11,7 @@ import java.util.Date;
  * @date 2019/7/14 15:53
  * @about <link href='http://zzyitj.xyz/'/>
  */
-@Getter
-@Setter
-@ToString
+@Data
 @TableName(value = "t_user_info")
 public class UserInfo implements Serializable {
 

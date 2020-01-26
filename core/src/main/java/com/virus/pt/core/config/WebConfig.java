@@ -36,10 +36,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + realPath);
         logger.info("文件真实目录: {}**", realPath);
         if (serverPath.substring(0, 1).equals("/")) {
-            logger.info("文件对外暴露的访问路径: http://{}:{}{}/{}/**",
+            logger.info("文件对外暴露的访问路径: {}:{}{}/{}/**",
                     virusHost, serverPort, serverPath, staticAccessPath);
         } else {
-            logger.info("文件对外暴露的访问路径: http://{}:{}/{}/{}/**",
+            logger.info("文件对外暴露的访问路径: {}:{}/{}/{}/**",
                     virusHost, serverPort, serverPath, staticAccessPath);
         }
     }

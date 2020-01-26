@@ -1,9 +1,7 @@
 package com.virus.pt.model.dataobject;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,9 +12,7 @@ import java.util.Date;
  * @date 2020/1/13 2:04 下午
  * @email zzy.main@gmail.com
  */
-@Getter
-@Setter
-@ToString
+@Data
 @TableName(value = "t_user_data")
 public class UserData implements Serializable {
     private static final long serialVersionUID = 7892068697488077053L;

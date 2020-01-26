@@ -1,9 +1,7 @@
 package com.virus.pt.model.dataobject;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,9 +12,7 @@ import java.util.Date;
  * @date 2020/1/10 11:34 上午
  * @email zzy.main@gmail.com
  */
-@Getter
-@Setter
-@ToString
+@Data
 @TableName(value = "t_user_auth")
 public class UserAuth implements Serializable {
 

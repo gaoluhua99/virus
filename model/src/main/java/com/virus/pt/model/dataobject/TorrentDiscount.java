@@ -1,9 +1,7 @@
 package com.virus.pt.model.dataobject;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,9 +13,7 @@ import java.util.Date;
  * @date 2020/1/13 2:07 下午
  * @email zzy.main@gmail.com
  */
-@Getter
-@Setter
-@ToString
+@Data
 @TableName(value = "t_torrent_discount")
 public class TorrentDiscount implements Serializable {
     private static final long serialVersionUID = 3178118618608044180L;
