@@ -21,7 +21,7 @@ public interface UserDataService extends IService<UserData> {
 
     UserData getRedisByPasskey(String passkey);
 
-    UserData getByUid(long id) throws TipException;
+    UserData getByUDId(long id) throws TipException;
 
     UserData getByPasskey(String passkey) throws TipException;
 

@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
         // 根据登录结果获取用户信息
         UserAuth userAuth = userAuthService.login(email, password);
         UserInfo userInfo = userInfoService.getByUserAuthId(userAuth.getId());
-        UserData userData = userDataService.getByUid(userInfo.getFkUserDataId());
+        UserData userData = userDataService.getByUDId(userInfo.getFkUserDataId());
         return UserBo.getUserDto(userAuth, userData, userInfo, VirusUtils.getNewToken(userAuth.getId()));
     }
 
@@ -179,7 +179,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getByUserAuthId(long userAuthId) throws TipException {
         UserAuth userAuth = userAuthService.getById(userAuthId);
         UserInfo userInfo = userInfoService.getByUserAuthId(userAuth.getId());
-        UserData userData = userDataService.getByUid(userInfo.getFkUserDataId());
+        UserData userData = userDataService.getByUDId(userInfo.getFkUserDataId());
         return UserBo.getUserDto(userAuth, userData, userInfo, VirusUtils.getNewToken(userAuth.getId()));
     }
 }

@@ -75,7 +75,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
     }
 
     @Override
-    public UserData getByUid(long id) throws TipException {
+    public UserData getByUDId(long id) throws TipException {
         UserData userData = getRedisById(id);
         if (userData == null) {
             userData = this.getOne(new QueryWrapper<UserData>()

@@ -63,4 +63,9 @@ public class TorrentServiceImpl extends ServiceImpl<TorrentDao, Torrent> impleme
                 .eq("uk_info_hash", infoHash)
                 .eq("is_delete", false));
     }
+
+    @Override
+    public boolean saveRollback(Torrent torrent) {
+        return save(torrent);
+    }
 }

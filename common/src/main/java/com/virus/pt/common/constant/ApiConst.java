@@ -14,7 +14,5 @@ public class ApiConst {
     public static final int SECOND_UNIT = 1000;
     // jwt user auth key
     public static final String JWT_CLAIM_USER_ID = "userAuthId";
-    public static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyQXV0aElkIjoxLCJleHAiOjE1ODIxMDQzMzEsImlhdCI6MTU3OTUxMjMzMX0.hlT-YX219bpM9tu1TWbilu012uSlwuVthrQ1KDw6X-o";
-    // json
-    public static final String JSON = "application/json";
+    public static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyQXV0aElkIjoxLCJleHAiOjE1ODI3MjM2MDksImlhdCI6MTU4MDEzMTYwOX0.ec4KYFm-C8qV0bR7E5i8dm0tiSbs8zzh52FRQi1Tf5g";
 }

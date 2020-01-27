@@ -18,8 +18,6 @@ config:
     host: 'http://localhost'
     # virus的port
     port: 11111
-    # 是否用到https
-    useHttps: false
     path: /virus
     # 公告配置
     notice:
@@ -46,6 +44,9 @@ config:
         existByUsername: '/exist/username/{username}'
         existByEmail: '/exist/email/{email}'
         avatar: /avatar
+      torrent:
+        value: /torrent
+        download: '/{tid}/{token}'
     # 上传文件配置，可直接get访问
     file:
       # 静态资源对外暴露的名称
@@ -66,10 +67,9 @@ config:
     host: 'http://localhost'
     # pestilence的端口
     port: 22222
-    # 是否用到https
-    useHttps: false
     # 路径
     path: /pestilence
+    tracker: /tracker
   # 前端服务器配置
   germ:
     # 名称
@@ -78,7 +78,6 @@ config:
     host: 'http://localhost'
     # germ的port
     port: 4200
-    # 是否用到https
-    useHttps: false
     # 路径
     path: /
+    torrentDetail: /torrent/detail

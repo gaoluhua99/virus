@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -95,7 +96,7 @@ public class UserController {
     @ApiOperation(value = "用户上传头像")
     @ApiImplicitParam(name = "token", value = "Header携带token辨识用户", example = ApiConst.TOKEN,
             dataType = "string", paramType = "header", required = true)
-    @PostMapping(value = "${config.virus.url.user.avatar}", produces = ApiConst.JSON)
+    @PostMapping(value = "${config.virus.url.user.avatar}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> avatarUpload(MultipartFile image, @ApiIgnore HttpServletRequest request)
             throws TipException, IOException {
         // 检查是不是图片
