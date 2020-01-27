@@ -30,4 +30,6 @@ public interface UserDataService extends IService<UserData> {
     void updateDataToRedis(String passkey, long upload, long download);
 
     boolean updateData(String passkey, long upload, long download);
+
+    int countByStatus(short status);
 }

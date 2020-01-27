@@ -26,4 +26,8 @@ public interface UserAuthService extends IService<UserAuth> {
     UserAuth getById(long id) throws TipException;
 
     boolean resetPass(String email, String password) throws TipException;
+
+    int countTotal();
+
+    int countNotActivation();
 }

@@ -1,15 +1,16 @@
 package com.virus.pt.core.controller;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.virus.pt.common.constant.ApiConst;
+import com.virus.pt.common.enums.UserDataEnum;
 import com.virus.pt.common.exception.TipException;
-import com.virus.pt.db.service.ConfigService;
-import com.virus.pt.db.service.NoticeService;
-import com.virus.pt.db.service.UserLevelService;
+import com.virus.pt.db.service.*;
 import com.virus.pt.model.bo.ConfigBo;
 import com.virus.pt.model.bo.NoticeBo;
 import com.virus.pt.model.dto.ConfigDto;
 import com.virus.pt.model.dto.ConfigUserDto;
 import com.virus.pt.model.dto.NoticeDto;
+import com.virus.pt.model.dto.SiteInfoDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api(tags = "获取配置、更新配置、获取公告")
+@Api(tags = "获取配置、更新配置、获取公告、获取站点信息等")
 @RestController
 @RequestMapping("${config.virus.url.config.value}")
 public class ConfigController {
@@ -38,6 +39,12 @@ public class ConfigController {
 
     @Autowired
     private NoticeService noticeService;
+
+    @Autowired
+    private UserAuthService userAuthService;
+
+    @Autowired
+    private UserDataService userDataService;
 
     @Value("${config.virus.notice.len}")
     private long noticeLen;
@@ -78,6 +85,22 @@ public class ConfigController {
     @GetMapping(value = "${config.virus.url.config.notice}")
     public ResponseEntity<List<NoticeDto>> getNotice() {
         return ResponseEntity.ok(NoticeBo.getNoticeDtoList(noticeService.getAll(0, noticeLen).getRecords()));
+    }
+
+    /**
+     * 已登录用户获取站点信息
+     *
+     * @return {@link com.virus.pt.model.dto.SiteInfoDto}
+     */
+    @ApiOperation(value = "已登录用户获取站点信息")
+    @ApiImplicitParam(name = "token", value = "Header携带token辨识用户", example = ApiConst.TOKEN,
+            dataType = "string", paramType = "header", required = true)
+    @GetMapping(value = "${config.virus.url.config.siteInfo}")
+    public ResponseEntity<SiteInfoDto> getSiteInfo() {
+        return ResponseEntity.ok(ConfigBo.getSiteInfoDto(userAuthService.countTotal(),
+                userDataService.countByStatus((short) UserDataEnum.WARNING.getCode()),
+                userDataService.countByStatus((short) UserDataEnum.BAN.getCode()),
+                userAuthService.countNotActivation()));
     }
 
     // TODO 管理员更新配置

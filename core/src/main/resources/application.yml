@@ -31,6 +31,7 @@ config:
         value: /config
         user: /user
         notice: /notice
+        siteInfo: /site/info
       auth:
         value: /auth
         login: /login

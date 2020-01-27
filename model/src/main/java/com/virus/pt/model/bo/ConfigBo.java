@@ -4,6 +4,7 @@ import com.virus.pt.model.dataobject.Config;
 import com.virus.pt.model.dataobject.UserLevel;
 import com.virus.pt.model.dto.ConfigDto;
 import com.virus.pt.model.dto.ConfigUserDto;
+import com.virus.pt.model.dto.SiteInfoDto;
 import com.virus.pt.model.dto.UserLevelDto;
 import com.virus.pt.model.util.BeanUtils;
 
@@ -29,5 +30,14 @@ public class ConfigBo {
         });
         configUserDto.setLevelList(userLevelDtoList);
         return configUserDto;
+    }
+
+    public static SiteInfoDto getSiteInfoDto(int total, int warning, int ban, int notActive) {
+        SiteInfoDto siteInfoDto = new SiteInfoDto();
+        siteInfoDto.setTotalUser(total);
+        siteInfoDto.setWarningUser(warning);
+        siteInfoDto.setBangUser(ban);
+        siteInfoDto.setNotActiveUser(notActive);
+        return siteInfoDto;
     }
 }

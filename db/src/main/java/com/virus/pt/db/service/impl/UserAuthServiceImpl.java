@@ -91,4 +91,19 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthDao, UserAuth> impl
                 .eq("uk_email", email)
                 .eq("is_delete", false));
     }
+
+    @Override
+    public int countTotal() {
+        return count(new QueryWrapper<UserAuth>()
+                .eq("is_delete", false));
+    }
+
+    @Override
+    public int countNotActivation() {
+        return count(new QueryWrapper<UserAuth>()
+                .eq("is_activation", false)
+                .eq("is_delete", false));
+    }
+
+
 }

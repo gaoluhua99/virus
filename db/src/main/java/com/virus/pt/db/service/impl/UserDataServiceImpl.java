@@ -138,4 +138,11 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
                 .eq("uk_passkey", passkey)
                 .eq("is_delete", false));
     }
+
+    @Override
+    public int countByStatus(short status) {
+        return count(new QueryWrapper<UserData>()
+                .eq("user_status", status)
+                .eq("is_delete", false));
+    }
 }
