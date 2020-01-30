@@ -26,7 +26,7 @@ public class PostInfo implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modified;
     private Boolean isDelete;
-    private String infoType;
+    private Short infoType;
     private Long ukInfoId;
     private BigDecimal ratingAverage;
     private Long ratingNumRaters;

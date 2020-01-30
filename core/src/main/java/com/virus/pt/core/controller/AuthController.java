@@ -116,7 +116,7 @@ public class AuthController {
      * @throws com.virus.pt.common.exception.TipException 错误抛出
      */
     @ApiOperation(value = "注册")
-    @PostMapping(value = "${config.virus.url.auth.register}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "${config.virus.url.auth.register}")
     public ResponseEntity<?> register(@RequestBody RegisterVo registerVO, @ApiIgnore HttpServletRequest request)
             throws TipException {
         // 判断网站是否开启注册功能，注册功能都没有开启你注册啥
@@ -184,7 +184,7 @@ public class AuthController {
      * @throws TipException 错误抛出
      */
     @ApiOperation(value = "登录")
-    @PostMapping(value = "${config.virus.url.auth.login}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "${config.virus.url.auth.login}")
     public ResponseEntity<UserDto> login(@RequestBody LoginVo loginVO, @ApiIgnore HttpServletRequest request)
             throws TipException {
         // 判断网站是否开启登录功能，登录功能都没有开启你登录啥
@@ -231,7 +231,7 @@ public class AuthController {
 
     // 发送忘记密码邮件
     @ApiOperation(value = "发送重置密码邮件")
-    @PostMapping(value = "${config.virus.url.auth.sendResetPassEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "${config.virus.url.auth.sendResetPassEmail}")
     public ResponseEntity<?> sendResetPassEmail(@RequestBody SendResetPassEmailVo sendResetPassEmailVO,
                                                 @ApiIgnore HttpServletRequest request) throws TipException {
         // 判断验证码是否正确
@@ -263,7 +263,7 @@ public class AuthController {
     }
 
     @ApiOperation(value = "重置密码")
-    @PostMapping(value = "${config.virus.url.auth.resetPass}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "${config.virus.url.auth.resetPass}")
     public ResponseEntity<?> resetPass(@RequestBody ResetPassVo resetPassVO, @ApiIgnore HttpServletRequest request)
             throws TipException {
         // 判断验证码是否正确
