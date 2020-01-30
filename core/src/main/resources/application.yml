@@ -47,6 +47,9 @@ config:
       torrent:
         value: /torrent
         download: '/{tid}/{token}'
+      post:
+        value: /post
+        count: /count
     # 上传文件配置，可直接get访问
     file:
       # 静态资源对外暴露的名称

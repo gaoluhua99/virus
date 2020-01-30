@@ -14,7 +14,7 @@ import lombok.ToString;
  * @date 2020/1/21 2:15 下午
  * @email zzy.main@gmail.com
  */
-@ApiModel(value = "组合用户model")
+@ApiModel(description = "组合用户model")
 @Getter
 @Setter
 @ToString
