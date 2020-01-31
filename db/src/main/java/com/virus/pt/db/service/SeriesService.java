@@ -1,18 +1,16 @@
 package com.virus.pt.db.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.virus.pt.model.dataobject.Post;
+import com.virus.pt.model.dataobject.Series;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author intent
  * @version 1.0
- * @date 2020/1/30 1:05 下午
+ * @date 2020/1/31 5:20 下午
  * @email zzy.main@gmail.com
  */
-public interface PostService extends IService<Post> {
-    int count(String categoryName, boolean isWait);
-
+public interface SeriesService extends IService<Series> {
     @Transactional(rollbackFor = Exception.class)
-    boolean saveRollback(Post post);
+    boolean saveRollback(Series series);
 }

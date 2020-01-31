@@ -181,6 +181,9 @@ public class PostInfoUtils {
                 }
             }
         }
+        if (StringUtils.isBlank(stringBuilder.toString())) {
+            return null;
+        }
         return stringBuilder.toString();
     }
 }

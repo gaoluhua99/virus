@@ -1,19 +1,24 @@
 package com.virus.pt.core.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.virus.pt.common.constant.ApiConst;
 import com.virus.pt.common.enums.PostInfoTypeEnum;
 import com.virus.pt.common.enums.ResultEnum;
 import com.virus.pt.common.exception.TipException;
 import com.virus.pt.common.util.JackJsonUtils;
+import com.virus.pt.common.util.JwtUtils;
 import com.virus.pt.common.util.PostInfoUtils;
-import com.virus.pt.db.service.PostInfoService;
-import com.virus.pt.db.service.PostService;
+import com.virus.pt.core.service.PostReleaseService;
+import com.virus.pt.db.service.*;
 import com.virus.pt.model.bo.PostInfoBo;
-import com.virus.pt.model.dataobject.PostInfo;
+import com.virus.pt.model.bo.PostReleaseBo;
+import com.virus.pt.model.dataobject.*;
 import com.virus.pt.model.dto.PostInfoDto;
+import com.virus.pt.model.dto.PostQualityDto;
 import com.virus.pt.model.vo.PostCountVo;
 import com.virus.pt.model.vo.PostInfoVo;
+import com.virus.pt.model.vo.PostReleaseVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +49,9 @@ public class PostController {
 
     @Autowired
     private PostInfoService postInfoService;
+
+    @Autowired
+    private PostReleaseService postReleaseService;
 
     @ApiOperation(value = "获取文章数")
     @ApiImplicitParam(name = "token", value = "Header携带token辨识用户", example = ApiConst.TOKEN,
@@ -84,5 +92,20 @@ public class PostController {
                 throw new TipException(ResultEnum.DOUBAN_NOT_FOUND);
             }
         }
+    }
+
+    @ApiOperation(value = "发布文章")
+    @ApiImplicitParam(name = "token", value = "Header携带token辨识用户", example = ApiConst.TOKEN,
+            dataType = "string", paramType = "header", required = true)
+    @PostMapping(value = "")
+    public ResponseEntity<?> release(@RequestBody PostReleaseVo postReleaseVo, @ApiIgnore HttpServletRequest request)
+            throws TipException, JsonProcessingException {
+        long userId = JwtUtils.getUserIdFromRequest(request);
+        PostQualityDto postQualityByReleaseVo = PostReleaseBo.getPostQuality(postReleaseVo);
+        String qualityJson = JackJsonUtils.json(postQualityByReleaseVo);
+        if (postReleaseService.saveRollback(userId, qualityJson, postReleaseVo)) {
+            return ResponseEntity.ok().build();
+        }
+        throw new TipException(ResultEnum.ERROR);
     }
 }

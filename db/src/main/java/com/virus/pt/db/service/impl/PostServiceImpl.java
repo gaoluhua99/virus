@@ -25,4 +25,9 @@ public class PostServiceImpl extends ServiceImpl<PostDao, Post> implements PostS
         }
         return baseMapper.countByCategoryName(categoryName, isWait);
     }
+
+    @Override
+    public boolean saveRollback(Post post) {
+        return save(post);
+    }
 }
