@@ -79,6 +79,9 @@ public class PostController {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private PostContentService postContentService;
+
     @ApiOperation(value = "获取文章数")
     @ApiImplicitParam(name = "token", value = "Header携带token辨识用户", example = ApiConst.TOKEN,
             dataType = "string", paramType = "header", required = true)
@@ -183,19 +186,23 @@ public class PostController {
                 switch (postListVo.getSortKey()) {
                     case "created":
                         postList = postService.getPostPageByCategoryNameOrderByCreated(
-                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(), postListVo.getDesc(), false).getRecords();
+                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(),
+                                postListVo.getDesc(), false).getRecords();
                         break;
                     case "title":
                         postList = postService.getPostPageByCategoryNameOrderByTitle(
-                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(), postListVo.getDesc(), false).getRecords();
+                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(),
+                                postListVo.getDesc(), false).getRecords();
                         break;
                     case "uid":
                         postList = postService.getPostPageByCategoryNameOrderByUid(
-                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(), postListVo.getDesc(), false).getRecords();
+                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(),
+                                postListVo.getDesc(), false).getRecords();
                         break;
                     case "size":
                         postList = postService.getPostPageByCategoryNameOrderBySize(
-                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(), postListVo.getDesc(), false).getRecords();
+                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(),
+                                postListVo.getDesc(), false).getRecords();
                         break;
                     default:
                         throw new TipException(ResultEnum.CATEGORY_ERROR);
@@ -208,32 +215,7 @@ public class PostController {
             if (!postListVo.getIsWait()) {
                 // 获取文章对应的所有系列
                 List<Series> seriesList = seriesService.getListByPostId(post.getId());
-                seriesList.forEach(series -> {
-                    // 获取系列下所有种子
-                    List<Torrent> torrentList = seriesTorrentService.getListBySeriesId(series.getId());
-                    Map<Long, TorrentDiscount> discountMap = new HashMap<>();
-                    Map<Long, Long> uploadMap = new HashMap<>();
-                    Map<Long, Long> downloadMap = new HashMap<>();
-                    Map<Long, Long> completeMap = new HashMap<>();
-                    // 获取种子的优惠信息等
-                    torrentList.forEach(torrent -> {
-                        long uploadCount = peerService.getSeedingCount(torrent.getId());
-                        long downloadCount = peerService.getDownloadingCount(torrent.getId());
-                        uploadMap.put(torrent.getId(), uploadCount);
-                        downloadMap.put(torrent.getId(), downloadCount);
-                        completeMap.put(torrent.getId(), torrentStatusService.countByTid(torrent.getId()));
-                        TorrentDiscount discount = torrentDiscountService.get(torrent.getFkTorrentDiscountId());
-                        if (discount.getLimitTime() == 0
-                                || discount.getCreated().getTime() + discount.getLimitTime() > System.currentTimeMillis()) {
-                            discountMap.put(torrent.getId(), discount);
-                        } else {
-                            discountMap.put(torrent.getId(), TorrentDiscountEnum.toDiscount(TorrentDiscountEnum.NORMAL));
-                        }
-                    });
-                    seriesDtoList.add(
-                            SeriesBo.getSeriesDto(
-                                    series, TorrentBo.getTorrentDtoList(torrentList, discountMap, uploadMap, completeMap, downloadMap)));
-                });
+                genSeriesDtoList(seriesDtoList, seriesList);
             }
             String username = userInfoService.getByUserAuthId(post.getFkUserAuthId()).getUkUsername();
             PostInfo douban = null, imdb = null;
@@ -247,5 +229,64 @@ public class PostController {
                     PostInfoUtils.getPostInfoDto(douban), PostInfoUtils.getPostInfoDto(imdb)));
         }
         return ResponseEntity.ok(postDtoList);
+    }
+
+    private void genSeriesDtoList(List<SeriesDto> seriesDtoList, List<Series> seriesList) {
+        seriesList.forEach(series -> {
+            // 获取系列下所有种子
+            List<Torrent> torrentList = seriesTorrentService.getListBySeriesId(series.getId());
+            Map<Long, TorrentDiscount> discountMap = new HashMap<>();
+            Map<Long, Long> uploadMap = new HashMap<>();
+            Map<Long, Long> downloadMap = new HashMap<>();
+            Map<Long, Long> completeMap = new HashMap<>();
+            // 获取种子的优惠信息等
+            torrentList.forEach(torrent -> {
+                long uploadCount = peerService.getSeedingCount(torrent.getId());
+                long downloadCount = peerService.getDownloadingCount(torrent.getId());
+                uploadMap.put(torrent.getId(), uploadCount);
+                downloadMap.put(torrent.getId(), downloadCount);
+                completeMap.put(torrent.getId(), torrentStatusService.countByTid(torrent.getId()));
+                TorrentDiscount discount = torrentDiscountService.get(torrent.getFkTorrentDiscountId());
+                if (discount.getLimitTime() == 0
+                        || discount.getCreated().getTime() + discount.getLimitTime() > System.currentTimeMillis()) {
+                    discountMap.put(torrent.getId(), discount);
+                } else {
+                    discountMap.put(torrent.getId(), TorrentDiscountEnum.toDiscount(TorrentDiscountEnum.NORMAL));
+                }
+            });
+            seriesDtoList.add(
+                    SeriesBo.getSeriesDto(
+                            series, TorrentBo.getTorrentDtoList(torrentList, discountMap, uploadMap, completeMap, downloadMap)));
+        });
+    }
+
+    @ApiOperation(value = "根据文章ID获取文章")
+    @ApiImplicitParam(name = "token", value = "Header携带token辨识用户", example = ApiConst.TOKEN,
+            dataType = "string", paramType = "header", required = true)
+    @GetMapping(value = "${config.virus.url.post.id}")
+    public ResponseEntity<PostDto> get(@PathVariable("id") Long id) throws TipException, IOException {
+        Post post = postService.get(id);
+        if (post != null) {
+            List<SeriesDto> seriesDtoList = new ArrayList<>();
+            // 获取文章对应的所有系列
+            List<Series> seriesList = seriesService.getListByPostId(post.getId());
+            genSeriesDtoList(seriesDtoList, seriesList);
+            PostInfo douban = null, imdb = null;
+            if (post.getDoubanId() != null) {
+                douban = postInfoService.getDouban(post.getDoubanId());
+            }
+            if (post.getImdbId() != null) {
+                imdb = postInfoService.getByInfoId((short) PostInfoTypeEnum.IMDB.getInfoType(), post.getImdbId());
+            }
+            PostDto postDto = PostBo.getPostDto(post,
+                    userInfoService.getByUserAuthId(post.getFkUserAuthId()).getUkUsername(), seriesDtoList,
+                    PostInfoUtils.getPostInfoDto(douban), PostInfoUtils.getPostInfoDto(imdb));
+            PostContent postContent = postContentService.get(post.getFkPostContentId());
+            if (postContent != null) {
+                postDto.setContent(postContent.getContent());
+            }
+            return ResponseEntity.ok(postDto);
+        }
+        throw new TipException(ResultEnum.POST_EMPTY_ERROR);
     }
 }

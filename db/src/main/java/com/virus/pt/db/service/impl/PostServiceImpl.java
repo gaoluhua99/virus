@@ -123,6 +123,13 @@ public class PostServiceImpl extends ServiceImpl<PostDao, Post> implements PostS
     }
 
     @Override
+    public Post get(long id) {
+        return getOne(new QueryWrapper<Post>()
+                .eq("id", id)
+                .eq("is_delete", false));
+    }
+
+    @Override
     public int count(String categoryName, boolean isWait) {
         if (StringUtils.isBlank(categoryName)) {
             return count(new QueryWrapper<Post>()

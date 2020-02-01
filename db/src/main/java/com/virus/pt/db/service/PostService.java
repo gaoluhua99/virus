@@ -32,6 +32,8 @@ public interface PostService extends IService<Post> {
 
     IPage<Post> getPostPageByCategoryNameOrderBySize(int pageIndex, int pageSize, String categoryName, boolean desc, boolean wait);
 
+    Post get(long id);
+
     int count(String categoryName, boolean isWait);
 
     @Transactional(rollbackFor = Exception.class)

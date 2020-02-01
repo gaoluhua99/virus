@@ -13,4 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PostContentService extends IService<PostContent> {
     @Transactional(rollbackFor = Exception.class)
     boolean saveRollback(PostContent postContent);
+
+    PostContent get(long id);
 }
