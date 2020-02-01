@@ -21,7 +21,7 @@ import lombok.ToString;
 public class UserDto {
 
     // UserAuth
-    @ApiModelProperty(value = "uid", example = "1")
+    @ApiModelProperty(value = "userAuthId", example = "1")
     private Long userAuthId;
 
     @ApiModelProperty(value = "用户创建时间", example = "1561004995625")

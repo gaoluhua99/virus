@@ -83,6 +83,7 @@ public enum ResultEnum {
     RELEASE_SERIES_ERROR(5125, "系列信息保存失败"),
     RELEASE_TORRENT_ERROR(5126, "种子信息保存失败"),
     RELEASE_CONTENT_ERROR(5127, "文章内容保存失败"),
+    RELEASE_CATEGORY_ERROR(5128, "分类ID错误"),
     WAIT_ERROR(5130, "候选错误"),
     FIND_WAIT_ERROR(5131, "查询候选错误"),
     REPEAT_WAIT_ERROR(5132, "重复候选"),

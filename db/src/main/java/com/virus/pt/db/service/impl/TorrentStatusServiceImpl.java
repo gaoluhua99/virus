@@ -1,5 +1,6 @@
 package com.virus.pt.db.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.virus.pt.db.dao.TorrentStatusDao;
@@ -32,5 +33,12 @@ public class TorrentStatusServiceImpl
         torrentStatus.setClientName(clientName);
         torrentStatus.setIp(ip);
         return SqlHelper.retBool(this.baseMapper.insert(torrentStatus));
+    }
+
+    @Override
+    public long countByTid(long torrentId) {
+        return count(new QueryWrapper<TorrentStatus>()
+                .eq("fk_torrent_id", torrentId)
+                .eq("is_delete", false));
     }
 }

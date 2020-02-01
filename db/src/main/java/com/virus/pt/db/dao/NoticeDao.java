@@ -13,7 +13,5 @@ import org.apache.ibatis.annotations.Select;
  * @email zzy.main@gmail.com
  */
 public interface NoticeDao extends BaseMapper<Notice> {
-    @Select(value = "SELECT * FROM t_notice WHERE is_delete = false ORDER BY modified DESC")
-    IPage<Notice> selectAll(Page<Notice> page);
 }
 

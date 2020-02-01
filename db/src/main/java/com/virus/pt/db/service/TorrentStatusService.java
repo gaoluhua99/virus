@@ -13,4 +13,6 @@ public interface TorrentStatusService extends IService<TorrentStatus> {
     boolean exist(String userDataPasskey, long torrentId, boolean isSnatch);
 
     boolean save(String userDataPasskey, long torrentId, boolean isSnatch, String clientName, String ip);
+
+    long countByTid(long torrentId);
 }

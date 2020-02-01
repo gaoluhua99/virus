@@ -11,4 +11,6 @@ import com.virus.pt.model.dataobject.PostInfo;
  */
 public interface PostInfoService extends IService<PostInfo> {
     PostInfo getByInfoId(short infoType, long infoId);
+
+    PostInfo getDouban(long infoId);
 }

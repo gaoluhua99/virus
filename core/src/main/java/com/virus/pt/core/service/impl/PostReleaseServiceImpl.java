@@ -26,10 +26,10 @@ public class PostReleaseServiceImpl implements PostReleaseService {
     private static final Logger logger = LoggerFactory.getLogger(PostReleaseServiceImpl.class);
 
     @Autowired
-    private UserInfoService userInfoService;
+    private UserTeamService userTeamService;
 
     @Autowired
-    private UserTeamService userTeamService;
+    private PostCategoryService postCategoryService;
 
     @Autowired
     private PostContentService postContentService;
@@ -46,11 +46,15 @@ public class PostReleaseServiceImpl implements PostReleaseService {
     @Override
     public boolean saveRollback(long userId, String qualityJson, PostReleaseVo postReleaseVo) throws TipException {
         Post post = PostReleaseBo.getPost(postReleaseVo, userId, qualityJson);
-        UserInfo userInfo = userInfoService.getByUserAuthId(userId);
-        post.setFkUserInfoId(userInfo.getId());
         UserTeam userTeam = userTeamService.getByUserAuthId(userId);
         if (userTeam != null) {
             post.setFkUserTeamId(userTeam.getId());
+        }
+        PostCategory postCategory = postCategoryService.get(postReleaseVo.getPostCategoryId());
+        if (postCategory != null) {
+            post.setCategoryName(postCategory.getCategoryName());
+        } else {
+            throw new TipException(ResultEnum.RELEASE_CATEGORY_ERROR);
         }
         PostContent postContent = PostContentBo.getPostContent(postReleaseVo.getContent());
         if (postContentService.saveRollback(postContent)) {
@@ -80,8 +84,8 @@ public class PostReleaseServiceImpl implements PostReleaseService {
                         throw new TipException(ResultEnum.RELEASE_SERIES_ERROR);
                     }
                 }
-                logger.info("ID: {}, name: {}, 发布了新文章, id: {}, 标题: {}",
-                        userId, userInfo.getUkUsername(), post.getId(), post.getTitle());
+                logger.info("ID: {}, 发布了新文章, id: {}, 标题: {}",
+                        userId, post.getId(), post.getTitle());
                 return true;
             }
             throw new TipException(ResultEnum.RELEASE_ERROR);

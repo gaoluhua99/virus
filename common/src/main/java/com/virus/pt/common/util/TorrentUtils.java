@@ -38,7 +38,7 @@ public class TorrentUtils {
         Map<String, Object> infoMap = (Map<String, Object>) torrentDataMap.get("info");
         List<Object> files = (List<Object>) infoMap.get("files");
         long len = 0;
-        int count = 0;
+        long count = 0;
         if (files != null) {
             for (Object o : files) {
                 Map<String, Object> pace = (Map<String, Object>) o;

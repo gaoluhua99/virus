@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.virus.pt.db.dao.SeriesTorrentDao;
 import com.virus.pt.db.service.SeriesTorrentService;
 import com.virus.pt.model.dataobject.SeriesTorrent;
+import com.virus.pt.model.dataobject.Torrent;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author intent
@@ -18,5 +21,10 @@ public class SeriesTorrentServiceImpl extends ServiceImpl<SeriesTorrentDao, Seri
     @Override
     public boolean saveRollback(SeriesTorrent seriesTorrent) {
         return save(seriesTorrent);
+    }
+
+    @Override
+    public List<Torrent> getListBySeriesId(long seriesId) {
+        return baseMapper.selectTorrentListBySeriesId(seriesId);
     }
 }

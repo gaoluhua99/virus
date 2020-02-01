@@ -59,6 +59,8 @@ public class PostInfoUtils {
     }
 
     public static PostInfoDto getPostInfoDto(PostInfo postInfo) throws IOException {
+        if (postInfo == null)
+            return null;
         return getPostInfoDto(postInfo.getInfoType(), postInfo.getUkInfoId(), postInfo.getContent());
     }
 

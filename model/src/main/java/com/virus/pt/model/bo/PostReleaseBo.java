@@ -22,13 +22,13 @@ public class PostReleaseBo {
 
     public static Post getPost(PostReleaseVo postReleaseVo, long userId, String qualityJson) {
         Post post = new Post();
+        post.setFkUserAuthId(userId);
         // 处理豆瓣或imdb Id
         if (postReleaseVo.getPostInfoType() == 10) {
             post.setImdbId(postReleaseVo.getPostInfoId());
         } else {
             post.setDoubanId(postReleaseVo.getPostInfoId());
         }
-        post.setFkPostCategoryId(postReleaseVo.getPostCategoryId());
         post.setTitle(postReleaseVo.getTitle());
         post.setSubtitle(postReleaseVo.getSubtitle());
         post.setQuality(qualityJson);

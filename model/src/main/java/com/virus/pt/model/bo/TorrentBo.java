@@ -2,6 +2,16 @@ package com.virus.pt.model.bo;
 
 
 import com.virus.pt.model.dataobject.Torrent;
+import com.virus.pt.model.dataobject.TorrentDiscount;
+import com.virus.pt.model.dto.PeerDto;
+import com.virus.pt.model.dto.TorrentDiscountDto;
+import com.virus.pt.model.dto.TorrentDto;
+import com.virus.pt.model.util.BeanUtils;
+import org.apache.commons.codec.binary.Hex;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author intent
@@ -17,31 +27,38 @@ public class TorrentBo {
         return torrent;
     }
 
-//    public static TorrentDto getTorrentDto(Torrent torrent, Discount discount,
-//                                           Integer uploadCount, Integer completeCount, Integer downloadCount) {
-//        TorrentDto torrentDTO = new TorrentDto();
-//        BeanUtils.copyFieldToBean(torrent, torrentDTO);
-//        torrentDTO.setHash(Hex.encodeHexString(torrent.getInfoHash()));
-//        if (discount != null) {
-//            torrentDTO.setDiscount(DiscountBo.getDiscountDto(discount));
-//        }
-//        torrentDTO.setUploadCount(uploadCount);
-//        torrentDTO.setDownloadCount(downloadCount);
-//        torrentDTO.setCompleteCount(completeCount);
-//        return torrentDTO;
-//    }
-//
-//    public static List<TorrentDto> getTorrentDtoList(List<Torrent> torrentList, Map<Integer, Discount> discountMap,
-//                                                     Map<Integer, Integer> uploadMap,
-//                                                     Map<Integer, Integer> completeMap,
-//                                                     Map<Integer, Integer> downloadMap) {
-//        List<TorrentDto> torrentDtoList = new ArrayList<>();
-//        for (Torrent torrent : torrentList) {
-//            torrentDtoList.add(getTorrentDto(torrent, discountMap.get(torrent.getId()),
-//                    uploadMap.get(torrent.getId()),
-//                    completeMap.get(torrent.getId()),
-//                    downloadMap.get(torrent.getId())));
-//        }
-//        return torrentDtoList;
-//    }
+    public static TorrentDto getTorrentDto(Torrent torrent, TorrentDiscount discount,
+                                           Long uploadCount, Long completeCount, Long downloadCount) {
+        TorrentDto torrentDTO = new TorrentDto();
+        BeanUtils.copyFieldToBean(torrent, torrentDTO);
+        torrentDTO.setUserAuthId(torrent.getFkUserAuthId());
+        torrentDTO.setHash(Hex.encodeHexString(torrent.getUkInfoHash()));
+        torrentDTO.setCreate(torrent.getCreated().getTime());
+        torrentDTO.setModify(torrent.getModified().getTime());
+        if (discount != null) {
+            TorrentDiscountDto discountDTO = new TorrentDiscountDto();
+            BeanUtils.copyFieldToBean(discount, discountDTO);
+            torrentDTO.setDiscount(discountDTO);
+        }
+        PeerDto peerDto = new PeerDto();
+        peerDto.setUploadCount(uploadCount);
+        peerDto.setDownloadCount(downloadCount);
+        peerDto.setCompleteCount(completeCount);
+        torrentDTO.setPeer(peerDto);
+        return torrentDTO;
+    }
+
+    public static List<TorrentDto> getTorrentDtoList(List<Torrent> torrentList, Map<Long, TorrentDiscount> discountMap,
+                                                     Map<Long, Long> uploadMap,
+                                                     Map<Long, Long> completeMap,
+                                                     Map<Long, Long> downloadMap) {
+        List<TorrentDto> torrentDtoList = new ArrayList<>();
+        for (Torrent torrent : torrentList) {
+            torrentDtoList.add(getTorrentDto(torrent, discountMap.get(torrent.getId()),
+                    uploadMap.get(torrent.getId()),
+                    completeMap.get(torrent.getId()),
+                    downloadMap.get(torrent.getId())));
+        }
+        return torrentDtoList;
+    }
 }

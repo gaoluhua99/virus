@@ -51,6 +51,7 @@ config:
         value: /post
         count: /count
         info: /info
+        list: /list
     # 上传文件配置，可直接get访问
     file:
       # 静态资源对外暴露的名称

@@ -31,6 +31,6 @@ public class Torrent implements Serializable {
     private Long fileSize;
     private String filePath;
     private Long torrentSize;
-    private Integer torrentCount;
+    private Long torrentCount;
     private Boolean isDelete;
 }

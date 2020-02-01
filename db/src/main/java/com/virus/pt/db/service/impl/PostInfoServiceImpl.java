@@ -22,4 +22,11 @@ public class PostInfoServiceImpl extends ServiceImpl<PostInfoDao, PostInfo> impl
                 .eq("info_type", infoType)
                 .eq("is_delete", false));
     }
+
+    @Override
+    public PostInfo getDouban(long infoId) {
+        return this.getOne(new QueryWrapper<PostInfo>()
+                .eq("uk_info_id", infoId)
+                .eq("is_delete", false));
+    }
 }

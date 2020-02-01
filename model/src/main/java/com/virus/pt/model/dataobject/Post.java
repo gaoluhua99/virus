@@ -25,9 +25,8 @@ public class Post implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modified;
     private Boolean isDelete;
-    private Long fkUserInfoId;
+    private Long fkUserAuthId;
     private Long fkUserTeamId;
-    private Long fkPostCategoryId;
     private Long fkPostContentId;
     private Long doubanId;
     private Long imdbId;
@@ -35,6 +34,7 @@ public class Post implements Serializable {
     private String title;
     private String subtitle;
     private Integer hot;
+    private String categoryName;
     private String quality;
     private Boolean isWait;
 }
