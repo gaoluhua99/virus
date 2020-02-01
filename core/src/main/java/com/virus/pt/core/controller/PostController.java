@@ -155,24 +155,24 @@ public class PostController {
         if (StringUtils.isBlank(postListVo.getCategoryName()) || postListVo.getIsWait()) {
             if (StringUtils.isBlank(postListVo.getSortKey())) {
                 postList = postService.getPostPage(
-                        postListVo.getPageIndex(), postListVo.getPageSize(), true).getRecords();
+                        postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getIsWait()).getRecords();
             } else {
                 switch (postListVo.getSortKey()) {
                     case "created":
                         postList = postService.getPostPageOrderByCreated(
-                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getDesc(), true).getRecords();
+                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getDesc(), postListVo.getIsWait()).getRecords();
                         break;
                     case "title":
                         postList = postService.getPostPageOrderByTitle(
-                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getDesc(), true).getRecords();
+                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getDesc(), postListVo.getIsWait()).getRecords();
                         break;
                     case "uid":
                         postList = postService.getPostPageOrderByUid(
-                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getDesc(), true).getRecords();
+                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getDesc(), postListVo.getIsWait()).getRecords();
                         break;
                     case "size":
                         postList = postService.getPostPageOrderBySize(
-                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getDesc(), true).getRecords();
+                                postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getDesc(), postListVo.getIsWait()).getRecords();
                         break;
                     default:
                         throw new TipException(ResultEnum.CATEGORY_ERROR);
@@ -181,28 +181,28 @@ public class PostController {
         } else {
             if (StringUtils.isBlank(postListVo.getSortKey())) {
                 postList = postService.getPostPageByCategoryName(
-                        postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(), false).getRecords();
+                        postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(), postListVo.getIsWait()).getRecords();
             } else {
                 switch (postListVo.getSortKey()) {
                     case "created":
                         postList = postService.getPostPageByCategoryNameOrderByCreated(
                                 postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(),
-                                postListVo.getDesc(), false).getRecords();
+                                postListVo.getDesc(), postListVo.getIsWait()).getRecords();
                         break;
                     case "title":
                         postList = postService.getPostPageByCategoryNameOrderByTitle(
                                 postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(),
-                                postListVo.getDesc(), false).getRecords();
+                                postListVo.getDesc(), postListVo.getIsWait()).getRecords();
                         break;
                     case "uid":
                         postList = postService.getPostPageByCategoryNameOrderByUid(
                                 postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(),
-                                postListVo.getDesc(), false).getRecords();
+                                postListVo.getDesc(), postListVo.getIsWait()).getRecords();
                         break;
                     case "size":
                         postList = postService.getPostPageByCategoryNameOrderBySize(
                                 postListVo.getPageIndex(), postListVo.getPageSize(), postListVo.getCategoryName(),
-                                postListVo.getDesc(), false).getRecords();
+                                postListVo.getDesc(), postListVo.getIsWait()).getRecords();
                         break;
                     default:
                         throw new TipException(ResultEnum.CATEGORY_ERROR);

@@ -25,20 +25,18 @@ public class PostServiceImpl extends ServiceImpl<PostDao, Post> implements PostS
 
     private IPage<Post> getPostPageDesc(int pageIndex, int pageSize, boolean desc, String field, boolean wait) {
         Page<Post> postPage = new Page<>(pageIndex, pageSize);
+        postPage.addOrder(OrderItem.desc("hot"))
+                .addOrder(OrderItem.desc("pin"));
         if (desc) {
-            return page(postPage, new QueryWrapper<Post>()
+            return page(postPage
+                    .addOrder(OrderItem.desc(field)), new QueryWrapper<Post>()
                     .eq("is_wait", wait)
-                    .eq("is_delete", false))
-                    .addOrder(OrderItem.desc("hot"))
-                    .addOrder(OrderItem.desc("pin"))
-                    .addOrder(OrderItem.desc(field));
+                    .eq("is_delete", false));
         } else {
-            return page(postPage, new QueryWrapper<Post>()
+            return page(postPage
+                    .addOrder(OrderItem.asc(field)), new QueryWrapper<Post>()
                     .eq("is_wait", wait)
-                    .eq("is_delete", false))
-                    .addOrder(OrderItem.desc("hot"))
-                    .addOrder(OrderItem.desc("pin"))
-                    .addOrder(OrderItem.asc(field));
+                    .eq("is_delete", false));
         }
     }
 
@@ -79,22 +77,20 @@ public class PostServiceImpl extends ServiceImpl<PostDao, Post> implements PostS
     private IPage<Post> getPostPageByCategoryNameOrder(int pageIndex, int pageSize, String categoryName,
                                                        boolean desc, String field, boolean wait) {
         Page<Post> postPage = new Page<>(pageIndex, pageSize);
+        postPage.addOrder(OrderItem.desc("hot"))
+                .addOrder(OrderItem.desc("pin"));
         if (desc) {
-            return page(postPage, new QueryWrapper<Post>()
+            return page(postPage
+                    .addOrder(OrderItem.desc(field)), new QueryWrapper<Post>()
                     .eq("category_name", categoryName)
                     .eq("is_wait", wait)
-                    .eq("is_delete", false))
-                    .addOrder(OrderItem.desc("hot"))
-                    .addOrder(OrderItem.desc("pin"))
-                    .addOrder(OrderItem.desc(field));
+                    .eq("is_delete", false));
         } else {
-            return page(postPage, new QueryWrapper<Post>()
+            return page(postPage
+                    .addOrder(OrderItem.asc(field)), new QueryWrapper<Post>()
                     .eq("category_name", categoryName)
                     .eq("is_wait", wait)
-                    .eq("is_delete", false))
-                    .addOrder(OrderItem.desc("hot"))
-                    .addOrder(OrderItem.desc("pin"))
-                    .addOrder(OrderItem.asc(field));
+                    .eq("is_delete", false));
         }
     }
 
