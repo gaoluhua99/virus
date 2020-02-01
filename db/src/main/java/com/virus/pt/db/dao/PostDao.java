@@ -36,7 +36,7 @@ public interface PostDao extends BaseMapper<Post> {
             "WHERE t_post.id = t_series.fk_post_id\n" +
             "  AND t_series.id = t_series_torrent.fk_series_id\n" +
             "  AND t_series_torrent.fk_torrent_id = t_torrent.id\n" +
-            "  AND is_wait = #{isWait}\n" +
+            "  AND is_wait = ${isWait}\n" +
             "  AND t_post.is_delete = false\n" +
             "  AND t_series.is_delete = false\n" +
             "  AND t_series_torrent.is_delete = false\n" +
@@ -67,14 +67,14 @@ public interface PostDao extends BaseMapper<Post> {
             "WHERE t_post.id = t_series.fk_post_id\n" +
             "  AND t_series.id = t_series_torrent.fk_series_id\n" +
             "  AND t_series_torrent.fk_torrent_id = t_torrent.id\n" +
-            "  AND is_wait = #{isWait}\n" +
+            "  AND is_wait = ${isWait}\n" +
             "  AND t_post.is_delete = false\n" +
             "  AND t_series.is_delete = false\n" +
             "  AND t_series_torrent.is_delete = false\n" +
             "  AND t_torrent.is_delete = false\n" +
             "group by t_post.id\n" +
             "order by pin desc, hot desc, size asc")
-    IPage<Post> selectPostPageOrderBySizeAsc(Page page, @Param("isWait") boolean isWait);
+    IPage<Post> selectPostPageOrderBySizeAsc(Page<?> page, @Param("isWait") Boolean isWait);
 
     // 分类按size降序
     @Select(value = "SELECT sum(t_torrent.torrent_size) as size,\n" +
@@ -98,8 +98,8 @@ public interface PostDao extends BaseMapper<Post> {
             "WHERE t_post.id = t_series.fk_post_id\n" +
             "  AND t_series.id = t_series_torrent.fk_series_id\n" +
             "  AND t_series_torrent.fk_torrent_id = t_torrent.id\n" +
-            "  AND t_post.category_name = '#{categoryName}'\n" +
-            "  AND is_wait = #{isWait}\n" +
+            "  AND t_post.category_name = '${categoryName}'\n" +
+            "  AND is_wait = ${isWait}\n" +
             "  AND t_post.is_delete = false\n" +
             "  AND t_series.is_delete = false\n" +
             "  AND t_series_torrent.is_delete = false\n" +
@@ -130,8 +130,8 @@ public interface PostDao extends BaseMapper<Post> {
             "WHERE t_post.id = t_series.fk_post_id\n" +
             "  AND t_series.id = t_series_torrent.fk_series_id\n" +
             "  AND t_series_torrent.fk_torrent_id = t_torrent.id\n" +
-            "  AND t_post.category_name = '#{categoryName}'\n" +
-            "  AND is_wait = #{isWait}\n" +
+            "  AND t_post.category_name = '${categoryName}'\n" +
+            "  AND is_wait = ${isWait}\n" +
             "  AND t_post.is_delete = false\n" +
             "  AND t_series.is_delete = false\n" +
             "  AND t_series_torrent.is_delete = false\n" +
