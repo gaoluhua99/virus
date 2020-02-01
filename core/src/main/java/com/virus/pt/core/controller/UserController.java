@@ -7,7 +7,10 @@ import com.virus.pt.common.util.*;
 import com.virus.pt.core.service.UserService;
 import com.virus.pt.core.service.impl.AvatarStorageService;
 import com.virus.pt.db.service.UserAuthService;
+import com.virus.pt.db.service.UserDataService;
 import com.virus.pt.db.service.UserInfoService;
+import com.virus.pt.model.bo.UserBo;
+import com.virus.pt.model.dataobject.UserData;
 import com.virus.pt.model.dataobject.UserInfo;
 import com.virus.pt.model.dto.UserDto;
 import io.swagger.annotations.Api;
@@ -52,6 +55,9 @@ public class UserController {
     @Autowired
     private AvatarStorageService avatarStorageService;
 
+    @Autowired
+    private UserDataService userDataService;
+
     @Value("${config.virus.file.staticAccessPath}")
     private String staticAccessPath;
 
@@ -90,6 +96,21 @@ public class UserController {
         Long userAuthId = JwtUtils.getUserIdFromRequest(request);
         UserDto userDTO = userService.getByUserAuthId(userAuthId);
 //        userDTO.setIsSigned(signRecordService.isSigned(userId));
+        return ResponseEntity.ok(userDTO);
+    }
+
+    @ApiOperation(value = "根据用户userAuthId获取用户信息")
+    @ApiImplicitParam(name = "token", value = "Header携带token辨识用户", example = ApiConst.TOKEN,
+            dataType = "string", paramType = "header", required = true)
+    @GetMapping(value = "${config.virus.url.user.userByUserAuthId}")
+    public ResponseEntity<UserDto> getUserByUid(@PathVariable("userAuthId") Long userAuthId,
+                                                @ApiIgnore HttpServletRequest request)
+            throws TipException {
+        UserInfo userInfo = userInfoService.getByUserAuthId(userAuthId);
+        UserData userData = userDataService.getByUDId(userInfo.getFkUserDataId());
+        UserDto userDTO = UserBo.getUserDto(null, userData, userInfo, null);
+        userDTO.setUserAuthId(userAuthId);
+        userDTO.setPasskey(null);
         return ResponseEntity.ok(userDTO);
     }
 

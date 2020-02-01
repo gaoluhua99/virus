@@ -44,6 +44,7 @@ config:
         existByUsername: '/exist/username/{username}'
         existByEmail: '/exist/email/{email}'
         avatar: /avatar
+        userByUserAuthId: '/{userAuthId}'
       torrent:
         value: /torrent
         download: '/{tid}/{token}'
