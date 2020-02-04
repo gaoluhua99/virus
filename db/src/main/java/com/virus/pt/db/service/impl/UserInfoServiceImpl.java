@@ -46,4 +46,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfo> impl
                 .eq("fk_user_auth_id", userInfo.getFkUserAuthId())
                 .eq("is_delete", false));
     }
+
+    @Override
+    public int countBySex(boolean b) {
+        return count(new QueryWrapper<UserInfo>()
+                .eq("sex", b)
+                .eq("is_delete", false));
+    }
 }

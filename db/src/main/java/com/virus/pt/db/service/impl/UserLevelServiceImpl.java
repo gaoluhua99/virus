@@ -1,5 +1,6 @@
 package com.virus.pt.db.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.virus.pt.db.dao.UserLevelDao;
 import com.virus.pt.db.service.UserLevelService;
@@ -19,6 +20,8 @@ public class UserLevelServiceImpl extends ServiceImpl<UserLevelDao, UserLevel> i
 
     @Override
     public List<UserLevel> getAll() {
-        return baseMapper.selectAll();
+        return list(new QueryWrapper<UserLevel>()
+                .orderByAsc("need_exp")
+                .eq("is_delete", false));
     }
 }

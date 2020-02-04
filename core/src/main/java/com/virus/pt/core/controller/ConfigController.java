@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.virus.pt.common.constant.ApiConst;
 import com.virus.pt.common.enums.UserDataEnum;
 import com.virus.pt.common.exception.TipException;
+import com.virus.pt.common.util.JackJsonUtils;
 import com.virus.pt.db.service.*;
 import com.virus.pt.model.bo.ConfigBo;
 import com.virus.pt.model.bo.NoticeBo;
-import com.virus.pt.model.dto.ConfigDto;
-import com.virus.pt.model.dto.ConfigUserDto;
-import com.virus.pt.model.dto.NoticeDto;
-import com.virus.pt.model.dto.SiteInfoDto;
+import com.virus.pt.model.dataobject.PostCategory;
+import com.virus.pt.model.dataobject.PostCategoryQuality;
+import com.virus.pt.model.dto.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "获取配置、更新配置、获取公告、获取站点信息等")
@@ -45,6 +47,12 @@ public class ConfigController {
 
     @Autowired
     private UserDataService userDataService;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private PostCategoryService postCategoryService;
 
     @Value("${config.virus.notice.len}")
     private long noticeLen;
@@ -69,9 +77,22 @@ public class ConfigController {
     @ApiImplicitParam(name = "token", value = "Header携带token辨识用户", example = ApiConst.TOKEN,
             dataType = "string", paramType = "header", required = true)
     @GetMapping(value = "${config.virus.url.config.user}")
-    public ResponseEntity<ConfigUserDto> getConfigUser() throws TipException {
+    public ResponseEntity<ConfigUserDto> getConfigUser() throws TipException, IOException {
+        List<PostCategory> postCategoryList = postCategoryService.getAll();
+        List<PostCategoryDto> postCategoryDtoList = new ArrayList<>();
+        for (PostCategory postCategory : postCategoryList) {
+            PostCategoryDto postCategoryDto = new PostCategoryDto();
+            postCategoryDto.setId(postCategory.getId());
+            postCategoryDto.setCategoryName(postCategory.getCategoryName());
+            PostCategoryQuality categoryQuality = JackJsonUtils.parseObject(
+                    postCategory.getQuality(), PostCategoryQuality.class);
+            postCategoryDto.setQuality(categoryQuality);
+            postCategoryDto.setRemark(postCategory.getRemark());
+            postCategoryDtoList.add(postCategoryDto);
+        }
         return ResponseEntity.ok(
-                ConfigBo.getConfigUserDto(configService.get(), userLevelService.getAll()));
+                ConfigBo.getConfigUserDto(
+                        configService.get(), userLevelService.getAll(), postCategoryDtoList));
     }
 
     /**
@@ -100,7 +121,8 @@ public class ConfigController {
         return ResponseEntity.ok(ConfigBo.getSiteInfoDto(userAuthService.countTotal(),
                 userDataService.countByStatus((short) UserDataEnum.WARNING.getCode()),
                 userDataService.countByStatus((short) UserDataEnum.BAN.getCode()),
-                userAuthService.countNotActivation()));
+                userAuthService.countNotActivation(),
+                userInfoService.countBySex(true), userInfoService.countBySex(false)));
     }
 
     // TODO 管理员更新配置

@@ -26,4 +26,11 @@ public class SiteInfoDto {
 
     @ApiModelProperty(value = "未激活人数", example = "100")
     private Integer notActiveUser;
+
+    @ApiModelProperty(value = "男生人数", example = "100")
+    private Integer maleUser;
+
+    @ApiModelProperty(value = "女生人数", example = "100")
+    private Integer femaleUser;
+
 }

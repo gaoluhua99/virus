@@ -27,4 +27,7 @@ public class ConfigUserDto {
 
     @ApiModelProperty(value = "等级表")
     private List<UserLevelDto> levelList;
+
+    @ApiModelProperty(value = "分类")
+    private List<PostCategoryDto> postCategoryList;
 }

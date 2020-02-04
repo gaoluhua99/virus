@@ -2,9 +2,6 @@ package com.virus.pt.db.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.virus.pt.model.dataobject.UserLevel;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 /**
  * @author intent
@@ -13,6 +10,4 @@ import java.util.List;
  * @email zzy.main@gmail.com
  */
 public interface UserLevelDao extends BaseMapper<UserLevel> {
-    @Select(value = "SELECT * FROM t_user_level WHERE is_delete = false ORDER BY need_exp")
-    List<UserLevel> selectAll();
 }

@@ -2,10 +2,7 @@ package com.virus.pt.model.bo;
 
 import com.virus.pt.model.dataobject.Config;
 import com.virus.pt.model.dataobject.UserLevel;
-import com.virus.pt.model.dto.ConfigDto;
-import com.virus.pt.model.dto.ConfigUserDto;
-import com.virus.pt.model.dto.SiteInfoDto;
-import com.virus.pt.model.dto.UserLevelDto;
+import com.virus.pt.model.dto.*;
 import com.virus.pt.model.util.BeanUtils;
 
 import java.util.ArrayList;
@@ -18,7 +15,8 @@ public class ConfigBo {
         return configDTO;
     }
 
-    public static ConfigUserDto getConfigUserDto(Config config, List<UserLevel> levelList) {
+    public static ConfigUserDto getConfigUserDto(Config config, List<UserLevel> levelList,
+                                                 List<PostCategoryDto> postCategoryDtoList) {
         ConfigUserDto configUserDto = new ConfigUserDto();
         BeanUtils.copyFieldToBean(config, configUserDto);
         List<UserLevelDto> userLevelDtoList = new ArrayList<>();
@@ -29,15 +27,19 @@ public class ConfigBo {
             userLevelDtoList.add(userLevelDto);
         });
         configUserDto.setLevelList(userLevelDtoList);
+        configUserDto.setPostCategoryList(postCategoryDtoList);
         return configUserDto;
     }
 
-    public static SiteInfoDto getSiteInfoDto(int total, int warning, int ban, int notActive) {
+    public static SiteInfoDto getSiteInfoDto(int total, int warning, int ban, int notActive,
+                                             int male, int female) {
         SiteInfoDto siteInfoDto = new SiteInfoDto();
         siteInfoDto.setTotalUser(total);
         siteInfoDto.setWarningUser(warning);
         siteInfoDto.setBangUser(ban);
         siteInfoDto.setNotActiveUser(notActive);
+        siteInfoDto.setMaleUser(male);
+        siteInfoDto.setFemaleUser(female);
         return siteInfoDto;
     }
 }

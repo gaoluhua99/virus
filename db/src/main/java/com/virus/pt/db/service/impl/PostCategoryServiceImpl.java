@@ -7,6 +7,8 @@ import com.virus.pt.db.service.PostCategoryService;
 import com.virus.pt.model.dataobject.PostCategory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author intent
  * @version 1.0
@@ -14,11 +16,19 @@ import org.springframework.stereotype.Service;
  * @email zzy.main@gmail.com
  */
 @Service
-public class PostCategoryServiceImpl extends ServiceImpl<PostCategoryDao, PostCategory> implements PostCategoryService {
+public class PostCategoryServiceImpl extends ServiceImpl<PostCategoryDao, PostCategory>
+        implements PostCategoryService {
     @Override
     public PostCategory get(long id) {
         return getOne(new QueryWrapper<PostCategory>()
                 .eq("id", id)
+                .eq("is_delete", false));
+    }
+
+    @Override
+    public List<PostCategory> getAll() {
+        return list(new QueryWrapper<PostCategory>()
+                .orderByAsc("modified")
                 .eq("is_delete", false));
     }
 }

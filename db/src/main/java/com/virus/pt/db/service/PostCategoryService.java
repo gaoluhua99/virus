@@ -3,6 +3,8 @@ package com.virus.pt.db.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.virus.pt.model.dataobject.PostCategory;
 
+import java.util.List;
+
 /**
  * @author intent
  * @version 1.0
@@ -11,4 +13,6 @@ import com.virus.pt.model.dataobject.PostCategory;
  */
 public interface PostCategoryService extends IService<PostCategory> {
     PostCategory get(long id);
+
+    List<PostCategory> getAll();
 }

@@ -151,7 +151,6 @@ public class PostController {
             throw new TipException(ResultEnum.GET_POST_LEN_ERROR);
         }
         List<Post> postList;
-        // 没有分类名或isWait，返回候选
         if (StringUtils.isBlank(postListVo.getCategoryName()) || postListVo.getIsWait()) {
             if (StringUtils.isBlank(postListVo.getSortKey())) {
                 postList = postService.getPostPage(

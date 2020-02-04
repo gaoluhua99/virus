@@ -20,4 +20,6 @@ public interface UserInfoService extends IService<UserInfo> {
     boolean existByUsername(String username);
 
     boolean updateByUserAuthId(UserInfo userInfo);
+
+    int countBySex(boolean b);
 }

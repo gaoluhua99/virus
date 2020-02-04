@@ -26,7 +26,7 @@ public class RegisterVo {
     @ApiModelProperty(value = "昵称", example = "intent", required = true)
     private String username;
 
-    @ApiModelProperty(value = "性别", example = "false", required = false)
+    @ApiModelProperty(value = "性别", example = "true", required = false)
     private Boolean sex;
 
     @ApiModelProperty(value = "验证码", required = true)
