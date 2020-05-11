@@ -19,6 +19,7 @@ public interface UserInfoService extends IService<UserInfo> {
 
     boolean existByUsername(String username);
 
+    @Transactional(rollbackFor = Exception.class)
     boolean updateByUserAuthId(UserInfo userInfo);
 
     int countBySex(boolean b);

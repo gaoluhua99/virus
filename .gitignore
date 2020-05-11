@@ -34,3 +34,5 @@ build/
 logs
 upload
 torrents
+dbs
+.DS_Store

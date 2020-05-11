@@ -14,7 +14,6 @@ import com.virus.pt.db.service.UserDataService;
 import com.virus.pt.model.dataobject.Peer;
 import com.virus.pt.model.dataobject.Torrent;
 import com.virus.pt.model.dataobject.UserData;
-import com.virus.pt.pestilence.PestilenceApplication;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.net.URLCodec;
 import org.slf4j.Logger;
@@ -79,6 +78,8 @@ public class AnnounceController extends AnnounceImpl {
             checkAddTorrentStatus(peer, torrent.getId(), true);
             // 添加到peers
             peerService.save(torrent.getId(), peer);
+            // 统计本种子的做种和下载情况
+            peerService.statistics(torrent.getId());
             // 统计正在做种、下载人数
             return TrackerResponseUtils.success(peers,
                     peerService.getSeedingCount(torrent.getId()), peerService.getDownloadingCount(torrent.getId()));
@@ -101,6 +102,8 @@ public class AnnounceController extends AnnounceImpl {
                 checkAddTorrentStatus(peer, torrent.getId(), false);
                 // 添加到peers
                 peerService.save(torrent.getId(), peer);
+                // 统计本种子的做种和下载情况
+                peerService.statistics(torrent.getId());
                 // 统计正在做种、下载人数
                 return TrackerResponseUtils.success(peers,
                         peerService.getSeedingCount(torrent.getId()), peerService.getDownloadingCount(torrent.getId()));
@@ -188,7 +191,7 @@ public class AnnounceController extends AnnounceImpl {
         Peer oldPeer = peerService.get(torrent.getId(), peer);
         if (oldPeer != null) {
             peer.setState(oldPeer.getState());
-            // 上一次距离现在的连接时间(毫秒) = 当前时间戳 - 上一次连接时间戳
+            // 上一次距离现在的连接时间(毫秒) = 当前时间戳(也就是新的peer的上一次连接的时间戳) - 上一次连接时间戳
             long currentMillis = peer.getLastConnectTime() - oldPeer.getLastConnectTime();
             // 判断上一次到现在的连接时间是不是小于MIN_INTERVAL
             if (currentMillis / ApiConst.SECOND_UNIT < VirusUtils.config.getTrackerMinInterval()) {
@@ -199,6 +202,7 @@ public class AnnounceController extends AnnounceImpl {
             long currentDownload = peer.getDownloaded() - oldPeer.getDownloaded();
             // 判断上传速度：当前上传量 / 上一次距离现在的连接时间
             long currentUploadSpeed = currentUpload / (currentMillis / ApiConst.SECOND_UNIT);
+            logger.info("peer: {}, currentUploadSpeed: {}", peer.getIp(), currentUploadSpeed);
             // 如果上传速度大于config中设置的，则封号
             if (currentUploadSpeed > 104857600) {
                 userDataService.setStatus(peer.getPasskey(), UserDataEnum.BAN.getCode());

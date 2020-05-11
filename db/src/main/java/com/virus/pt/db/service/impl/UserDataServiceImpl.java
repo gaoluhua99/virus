@@ -18,7 +18,9 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -45,8 +47,8 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
     @Override
     public void saveToRedis(UserData userData) {
         valueOperations.set(
-                RedisConst.USER_DATA_PREFIX + userData.getId() +
-                        RedisConst.REDIS_REGEX + userData.getUkPasskey(), userData,
+                RedisConst.USER_DATA_PREFIX + userData.getId()
+                        + RedisConst.REDIS_REGEX + userData.getUkPasskey(), userData,
                 Duration.ofSeconds(RedisConst.USER_DATA_EXP));
     }
 
@@ -60,6 +62,26 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
         } else {
             return null;
         }
+    }
+
+    /**
+     * 获取redis中存在的数据
+     *
+     * @return 所有用户数据集合
+     */
+    @Override
+    public List<UserData> getListRedisById() {
+        List<UserData> userDataList = new ArrayList<>();
+        Set<String> keys = redisTemplate.keys(RedisConst.USER_DATA_PREFIX + RedisConst.REDIS_ALL_KEY);
+        if (keys != null && keys.size() > 0) {
+            for (String key : keys) {
+                UserData userData = (UserData) valueOperations.get(key);
+                if (userData != null) {
+                    userDataList.add(userData);
+                }
+            }
+        }
+        return userDataList;
     }
 
     @Override
@@ -119,18 +141,35 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
                 .eq("is_delete", false));
     }
 
+    /**
+     * 更新在redis中的数据
+     *
+     * @param passkey      passkey
+     * @param uploadIncr   上传增量
+     * @param downloadIncr 下载增量
+     */
     @Override
-    public void updateDataToRedis(String passkey, long upload, long download) {
+    public void updateDataToRedis(String passkey, long uploadIncr, long downloadIncr) {
         UserData userData = getRedisByPasskey(passkey);
-        userData.setUploaded(userData.getUploaded() + upload);
-        userData.setDownloaded(userData.getDownloaded() + download);
-        userData.setModified(new Date());
-        saveToRedis(userData);
+        if (userData != null) {
+            userData.setUploaded(userData.getUploaded() + uploadIncr);
+            userData.setDownloaded(userData.getDownloaded() + downloadIncr);
+            userData.setModified(new Date());
+            saveToRedis(userData);
+        }
     }
 
+    /**
+     * 更新在数据库中的数据
+     *
+     * @param passkey  passkey
+     * @param upload   上传量(不是增量)
+     * @param download 下载量(不是增量)
+     * @return
+     */
     @Override
     public boolean updateData(String passkey, long upload, long download) {
-        updateDataToRedis(passkey, upload, download);
+//        updateDataToRedis(passkey, upload, download);
         UserData userData = new UserData();
         userData.setUploaded(upload);
         userData.setDownloaded(download);
@@ -144,5 +183,10 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao, UserData> impl
         return count(new QueryWrapper<UserData>()
                 .eq("user_status", status)
                 .eq("is_delete", false));
+    }
+
+    @Override
+    public void removeByRedis(long id, String passkey) {
+        redisTemplate.delete(RedisConst.USER_DATA_PREFIX + id + RedisConst.REDIS_REGEX + passkey);
     }
 }

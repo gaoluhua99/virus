@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
             // 需要同步数据
             boolean isUpdate = userDataService.updateData(
                     userData.getUkPasskey(), userData.getUploaded(), userData.getDownloaded());
+//            userDataService.removeByRedis(userData.getId(), userData.getUkPasskey());
             if (!isUpdate) {
                 throw new TipException(ResultEnum.LOGOUT_DATA_UPDATE_ERROR);
             }

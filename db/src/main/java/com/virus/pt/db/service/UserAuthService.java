@@ -15,6 +15,7 @@ public interface UserAuthService extends IService<UserAuth> {
     @Transactional(rollbackFor = Exception.class)
     boolean saveRollback(UserAuth userAuth);
 
+    @Transactional(rollbackFor = Exception.class)
     boolean updateActive(String email);
 
     UserAuth login(String email, String password) throws TipException;
@@ -25,6 +26,7 @@ public interface UserAuthService extends IService<UserAuth> {
 
     UserAuth getById(long id) throws TipException;
 
+    @Transactional(rollbackFor = Exception.class)
     boolean resetPass(String email, String password) throws TipException;
 
     int countTotal();

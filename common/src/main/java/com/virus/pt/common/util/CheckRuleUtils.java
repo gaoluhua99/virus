@@ -86,7 +86,7 @@ public class CheckRuleUtils {
     }
 
     private static TrackerResponseEnum checkKey(String key) {
-        if (StringUtils.isBlank(key) || key.length() != 8) {
+        if (StringUtils.isBlank(key) || key.length() < 6 || key.length() > 8) {
             return TrackerResponseEnum.KEY_ERROR;
         }
         return TrackerResponseEnum.SUCCESS;
